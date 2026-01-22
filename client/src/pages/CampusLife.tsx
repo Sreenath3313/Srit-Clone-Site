@@ -3,12 +3,14 @@ import { Header } from '@/components/homepage/Header';
 import { Footer } from '@/components/homepage/Footer';
 import { Building2, Utensils, Dumbbell, Music, BookOpen, Home } from 'lucide-react';
 import { useScrollToHash } from '@/hooks/useScrollToHash';
+import { OrangeBorder } from '@/components/common/OrangeBorder';
 
 const CampusLife: React.FC = () => {
   useScrollToHash();
   
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      <OrangeBorder />
       <Header />
       
       <main className="flex-grow">

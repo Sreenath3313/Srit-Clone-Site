@@ -3,6 +3,9 @@ import { useParams, Link } from 'react-router-dom';
 import { Header } from '@/components/homepage/Header';
 import { Footer } from '@/components/homepage/Footer';
 import { Monitor, Cpu, Cog, Building2, ArrowLeft, Users, BookOpen, Award, LucideIcon } from 'lucide-react';
+import { OrangeBorder } from '@/components/common/OrangeBorder';
+import { ModernCard, ModernCardBody } from '@/components/common/ModernCard';
+import { motion } from 'framer-motion';
 
 interface FacultyMember {
   name: string;
@@ -312,55 +315,98 @@ const DepartmentDetail: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      <OrangeBorder />
       <Header />
       
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className={`bg-gradient-to-r ${dept.color} text-white py-20`}>
-          <div className="container mx-auto px-4">
-            <Link to="/departments" className="inline-flex items-center text-white/90 hover:text-white mb-6">
-              <ArrowLeft className="mr-2 h-5 w-5" />
+        {/* Hero Section with Background Image */}
+        <section className="relative py-12 md:py-20 overflow-hidden">
+          {/* Background Image with Gradient Overlay */}
+          <div className={`absolute inset-0 bg-gradient-to-r ${dept.color}`}>
+            <div className="absolute inset-0 bg-black/40"></div>
+          </div>
+          
+          {/* Content */}
+          <div className="container mx-auto px-4 relative z-10 text-white">
+            <Link to="/departments" className="inline-flex items-center text-white/90 hover:text-white mb-4 md:mb-6 text-sm md:text-base">
+              <ArrowLeft className="mr-2 h-4 w-4 md:h-5 md:w-5" />
               Back to Departments
             </Link>
             <div className="flex items-center mb-4">
-              <Icon className="h-16 w-16 mr-4" />
+              <Icon className="h-12 w-12 md:h-16 md:w-16 mr-3 md:mr-4" />
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold">{dept.name}</h1>
-                <p className="text-xl mt-2">{dept.code}</p>
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">{dept.name}</h1>
+                <p className="text-lg md:text-xl mt-2">{dept.code}</p>
               </div>
             </div>
-            <p className="text-lg max-w-3xl mt-6">{dept.description}</p>
+            <p className="text-sm md:text-base lg:text-lg max-w-3xl mt-4 md:mt-6">{dept.description}</p>
           </div>
         </section>
 
-        {/* Vision & Mission */}
-        <section className="py-16">
+        {/* Vision & Mission - Redesigned with Modern Cards */}
+        <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50 to-purple-50">
           <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              <div className={`${dept.bgColor} p-8 rounded-lg`}>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Vision</h3>
-                <p className="text-gray-700 leading-relaxed">{dept.vision}</p>
-              </div>
-              <div className="bg-gray-100 p-8 rounded-lg">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Mission</h3>
-                <ul className="space-y-2">
-                  {dept.mission.map((item, index) => (
-                    <li key={index} className="flex items-start text-gray-700">
-                      <div className="w-2 h-2 bg-orange-600 rounded-full mr-3 mt-2"></div>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-6xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <ModernCard variant="gradient" gradient="from-orange-50 to-orange-100" orangeAccent={true} className="h-full">
+                  <ModernCardBody>
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center mr-4">
+                        <BookOpen className="h-6 w-6 text-white" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900">Vision</h3>
+                    </div>
+                    <p className="text-gray-700 leading-relaxed">{dept.vision}</p>
+                  </ModernCardBody>
+                </ModernCard>
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <ModernCard variant="gradient" gradient="from-blue-50 to-purple-100" orangeAccent={true} className="h-full">
+                  <ModernCardBody>
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center mr-4">
+                        <Award className="h-6 w-6 text-white" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900">Mission</h3>
+                    </div>
+                    <ul className="space-y-2">
+                      {dept.mission.map((item, index) => (
+                        <motion.li
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: index * 0.1 }}
+                          className="flex items-start text-gray-700"
+                        >
+                          <div className="w-2 h-2 bg-purple-600 rounded-full mr-3 mt-2"></div>
+                          <span>{item}</span>
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </ModernCardBody>
+                </ModernCard>
+              </motion.div>
             </div>
           </div>
         </section>
 
         {/* Programs Offered */}
-        <section className="py-16 bg-white">
+        <section className="py-12 md:py-16 bg-white">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Programs Offered</h2>
-            <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 md:mb-8 text-center">Programs Offered</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto">
               {dept.programs.map((program, index) => (
                 <div key={index} className="bg-gray-50 p-6 rounded-lg border-2 border-gray-200">
                   <BookOpen className="h-8 w-8 text-orange-600 mb-3" />
@@ -372,10 +418,10 @@ const DepartmentDetail: React.FC = () => {
         </section>
 
         {/* Courses */}
-        <section className="py-16">
+        <section className="py-12 md:py-16">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Key Courses</h2>
-            <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 md:mb-8 text-center">Key Courses</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 max-w-6xl mx-auto">
               {dept.courses.map((course, index) => (
                 <div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
                   <p className="text-gray-700 text-sm">{course}</p>
@@ -475,22 +521,22 @@ const DepartmentDetail: React.FC = () => {
         </section>
 
         {/* CTA */}
-        <section className={`py-16 bg-gradient-to-r ${dept.color} text-white`}>
+        <section className={`py-12 md:py-16 bg-gradient-to-r ${dept.color} text-white`}>
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-4">Interested in Joining {dept.code}?</h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">Interested in Joining {dept.code}?</h2>
+            <p className="text-base md:text-xl mb-6 md:mb-8 max-w-2xl mx-auto">
               Take the first step towards an exciting career in {dept.name}
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 md:gap-4">
               <Link
                 to="/admissions"
-                className="bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+                className="bg-white text-gray-900 px-6 md:px-8 py-2 md:py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors min-h-[44px] inline-flex items-center justify-center"
               >
                 Apply Now
               </Link>
               <Link
                 to="/contact"
-                className="bg-white/20 text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/30 transition-colors border-2 border-white"
+                className="bg-white/20 text-white px-6 md:px-8 py-2 md:py-3 rounded-lg font-semibold hover:bg-white/30 transition-colors border-2 border-white min-h-[44px] inline-flex items-center justify-center"
               >
                 Contact Us
               </Link>

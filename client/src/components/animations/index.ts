@@ -5,3 +5,8 @@ export { StaggerContainer, StaggerItem } from './StaggerContainer';
 export { CountUp } from './CountUp';
 export { FloatingElements } from './FloatingElements';
 export { ParallaxSection } from './ParallaxSection';
+export { ParticleBackground } from './ParticleBackground';
+export { WaveBackground } from './WaveBackground';
+export { TiltCard } from './TiltCard';
+export { PageTransition } from './PageTransition';
+export { GradientOrb } from './GradientOrb';

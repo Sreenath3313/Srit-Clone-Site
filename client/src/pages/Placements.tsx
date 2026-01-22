@@ -3,12 +3,17 @@ import { Header } from '@/components/homepage/Header';
 import { Footer } from '@/components/homepage/Footer';
 import { Briefcase, TrendingUp, Users, Award, Building } from 'lucide-react';
 import { useScrollToHash } from '@/hooks/useScrollToHash';
+import { OrangeBorder } from '@/components/common/OrangeBorder';
+import { ModernCard, ModernCardBody } from '@/components/common/ModernCard';
+import { industryPartners, topRecruiters } from '@/data/companies';
+import { motion } from 'framer-motion';
 
 const Placements: React.FC = () => {
   useScrollToHash();
   
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      <OrangeBorder />
       <Header />
       
       <main className="flex-grow">
@@ -27,72 +32,135 @@ const Placements: React.FC = () => {
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Placement Highlights 2025-26</h2>
             <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-              <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-                <TrendingUp className="h-12 w-12 text-orange-600 mx-auto mb-3" />
-                <p className="text-4xl font-bold text-orange-600 mb-2">85%</p>
-                <p className="text-gray-700 font-semibold">Placement Rate</p>
-              </div>
+              <ModernCard variant="gradient" gradient="from-orange-50 to-orange-100" orangeAccent={true}>
+                <ModernCardBody className="text-center">
+                  <TrendingUp className="h-12 w-12 text-orange-600 mx-auto mb-3" />
+                  <p className="text-4xl font-bold text-orange-600 mb-2">85%</p>
+                  <p className="text-gray-700 font-semibold">Placement Rate</p>
+                </ModernCardBody>
+              </ModernCard>
               
-              <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-                <Users className="h-12 w-12 text-orange-600 mx-auto mb-3" />
-                <p className="text-4xl font-bold text-orange-600 mb-2">500+</p>
-                <p className="text-gray-700 font-semibold">Students Placed</p>
-              </div>
+              <ModernCard variant="gradient" gradient="from-blue-50 to-blue-100" orangeAccent={true}>
+                <ModernCardBody className="text-center">
+                  <Users className="h-12 w-12 text-blue-600 mx-auto mb-3" />
+                  <p className="text-4xl font-bold text-blue-600 mb-2">500+</p>
+                  <p className="text-gray-700 font-semibold">Students Placed</p>
+                </ModernCardBody>
+              </ModernCard>
               
-              <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-                <Building className="h-12 w-12 text-orange-600 mx-auto mb-3" />
-                <p className="text-4xl font-bold text-orange-600 mb-2">100+</p>
-                <p className="text-gray-700 font-semibold">Companies Visited</p>
-              </div>
+              <ModernCard variant="gradient" gradient="from-purple-50 to-purple-100" orangeAccent={true}>
+                <ModernCardBody className="text-center">
+                  <Building className="h-12 w-12 text-purple-600 mx-auto mb-3" />
+                  <p className="text-4xl font-bold text-purple-600 mb-2">100+</p>
+                  <p className="text-gray-700 font-semibold">Companies Visited</p>
+                </ModernCardBody>
+              </ModernCard>
               
-              <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-                <Award className="h-12 w-12 text-orange-600 mx-auto mb-3" />
-                <p className="text-4xl font-bold text-orange-600 mb-2">₹42 LPA</p>
-                <p className="text-gray-700 font-semibold">Highest Package</p>
-              </div>
+              <ModernCard variant="gradient" gradient="from-green-50 to-green-100" orangeAccent={true}>
+                <ModernCardBody className="text-center">
+                  <Award className="h-12 w-12 text-green-600 mx-auto mb-3" />
+                  <p className="text-4xl font-bold text-green-600 mb-2">₹42 LPA</p>
+                  <p className="text-gray-700 font-semibold">Highest Package</p>
+                </ModernCardBody>
+              </ModernCard>
             </div>
 
             <div className="mt-12 max-w-4xl mx-auto">
-              <div className="bg-orange-50 p-6 rounded-lg">
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Package Distribution</h3>
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div>
-                    <p className="text-lg font-semibold text-gray-900">Highest Package</p>
-                    <p className="text-2xl font-bold text-orange-600">₹42 LPA</p>
+              <ModernCard variant="gradient" gradient="from-orange-50 to-orange-100" orangeAccent={true}>
+                <ModernCardBody>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">Package Distribution</h3>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div>
+                      <p className="text-lg font-semibold text-gray-900">Highest Package</p>
+                      <p className="text-2xl font-bold text-orange-600">₹42 LPA</p>
+                    </div>
+                    <div>
+                      <p className="text-lg font-semibold text-gray-900">Average Package</p>
+                      <p className="text-2xl font-bold text-orange-600">₹6.5 LPA</p>
+                    </div>
+                    <div>
+                      <p className="text-lg font-semibold text-gray-900">Median Package</p>
+                      <p className="text-2xl font-bold text-orange-600">₹5.2 LPA</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-lg font-semibold text-gray-900">Average Package</p>
-                    <p className="text-2xl font-bold text-orange-600">₹6.5 LPA</p>
-                  </div>
-                  <div>
-                    <p className="text-lg font-semibold text-gray-900">Median Package</p>
-                    <p className="text-2xl font-bold text-orange-600">₹5.2 LPA</p>
-                  </div>
-                </div>
+                </ModernCardBody>
+              </ModernCard>
+            </div>
+          </div>
+        </section>
+
+        {/* Industry Partners Section - Redesigned with Logos */}
+        <section className="py-16 bg-gradient-to-br from-orange-50 to-purple-50">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-center mb-4">
+              <Briefcase className="h-10 w-10 text-orange-600 mr-4" />
+              <h2 className="text-3xl font-bold text-gray-900">Our Industry Partners</h2>
+            </div>
+            <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+              Collaborating with leading companies to provide world-class training and placement opportunities
+            </p>
+            
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                {industryPartners.map((partner, index) => (
+                  <motion.div
+                    key={partner.name}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                  >
+                    <ModernCard
+                      variant="default"
+                      hoverEffect={true}
+                      orangeAccent={true}
+                      className="h-full"
+                    >
+                      <ModernCardBody className="flex flex-col items-center justify-center text-center h-32">
+                        <div className="text-4xl mb-2">{partner.logo}</div>
+                        <h3 className="font-bold text-gray-900 text-sm">{partner.name}</h3>
+                      </ModernCardBody>
+                    </ModernCard>
+                  </motion.div>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
-        {/* Top Recruiters */}
+        {/* Top Recruiters - Redesigned with Modern Cards */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-center mb-12">
-              <Briefcase className="h-10 w-10 text-orange-600 mr-4" />
-              <h2 className="text-3xl font-bold text-gray-900">Our Top Recruiters</h2>
+            <div className="flex items-center justify-center mb-4">
+              <Building className="h-10 w-10 text-orange-600 mr-4" />
+              <h2 className="text-3xl font-bold text-gray-900">Top Recruiters</h2>
             </div>
+            <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+              Our graduates are recruited by leading companies across various industries
+            </p>
             
             <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                {[
-                  'TCS', 'Infosys', 'Wipro', 'Cognizant', 'Tech Mahindra', 'HCL',
-                  'Capgemini', 'Accenture', 'IBM', 'Amazon', 'Microsoft', 'Google',
-                  'Deloitte', 'Oracle', 'SAP', 'Cisco', 'Intel', 'Qualcomm',
-                  'Bosch', 'L&T', 'Ashok Leyland', 'Mahindra', 'TATA Motors', 'Hyundai'
-                ].map((company) => (
-                  <div key={company} className="bg-gray-50 p-4 rounded-lg shadow hover:shadow-lg transition-shadow flex items-center justify-center">
-                    <p className="text-center font-semibold text-gray-700">{company}</p>
-                  </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {topRecruiters.map((company, index) => (
+                  <motion.div
+                    key={company.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.05, duration: 0.3 }}
+                  >
+                    <ModernCard
+                      variant="default"
+                      hoverEffect={true}
+                      orangeAccent={false}
+                      className="h-full"
+                    >
+                      <ModernCardBody className="flex flex-col items-center justify-center text-center p-4">
+                        <div className="text-3xl mb-2">{company.logo}</div>
+                        <p className="text-sm font-semibold text-gray-700">{company.name}</p>
+                      </ModernCardBody>
+                    </ModernCard>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -105,61 +173,69 @@ const Placements: React.FC = () => {
             <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Training & Development</h2>
             
             <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
-              <div className="bg-white p-8 rounded-lg shadow-lg">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Pre-Placement Training</h3>
-                <p className="text-gray-700 mb-4">
-                  Comprehensive training program to prepare students for campus placements starting from third year.
-                </p>
-                <ul className="space-y-2 text-gray-700">
-                  <li>• <strong>Aptitude Training:</strong> Quantitative, Logical, Verbal reasoning</li>
-                  <li>• <strong>Technical Training:</strong> Programming, Data Structures, Algorithms</li>
-                  <li>• <strong>Soft Skills:</strong> Communication, Presentation, Group Discussion</li>
-                  <li>• <strong>Mock Interviews:</strong> Technical and HR rounds practice</li>
-                  <li>• <strong>Resume Building:</strong> Professional CV creation guidance</li>
-                </ul>
-              </div>
+              <ModernCard variant="default" orangeAccent={true}>
+                <ModernCardBody>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Pre-Placement Training</h3>
+                  <p className="text-gray-700 mb-4">
+                    Comprehensive training program to prepare students for campus placements starting from third year.
+                  </p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li>• <strong>Aptitude Training:</strong> Quantitative, Logical, Verbal reasoning</li>
+                    <li>• <strong>Technical Training:</strong> Programming, Data Structures, Algorithms</li>
+                    <li>• <strong>Soft Skills:</strong> Communication, Presentation, Group Discussion</li>
+                    <li>• <strong>Mock Interviews:</strong> Technical and HR rounds practice</li>
+                    <li>• <strong>Resume Building:</strong> Professional CV creation guidance</li>
+                  </ul>
+                </ModernCardBody>
+              </ModernCard>
 
-              <div className="bg-white p-8 rounded-lg shadow-lg">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Industry Partnerships</h3>
-                <p className="text-gray-700 mb-4">
-                  Strong collaborations with leading companies for internships, projects, and placements.
-                </p>
-                <ul className="space-y-2 text-gray-700">
-                  <li>• Industry guest lectures and workshops</li>
-                  <li>• Summer internship programs</li>
-                  <li>• Live project opportunities</li>
-                  <li>• Industry visits and exposure</li>
-                  <li>• Hackathons and coding competitions</li>
-                </ul>
-              </div>
+              <ModernCard variant="gradient" gradient="from-blue-50 to-purple-50" orangeAccent={true}>
+                <ModernCardBody>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Industry Partnerships</h3>
+                  <p className="text-gray-700 mb-4">
+                    Strong collaborations with leading companies for internships, projects, and placements.
+                  </p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li>• Industry guest lectures and workshops</li>
+                    <li>• Summer internship programs</li>
+                    <li>• Live project opportunities</li>
+                    <li>• Industry visits and exposure</li>
+                    <li>• Hackathons and coding competitions</li>
+                  </ul>
+                </ModernCardBody>
+              </ModernCard>
 
-              <div className="bg-white p-8 rounded-lg shadow-lg">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Skill Development Programs</h3>
-                <p className="text-gray-700 mb-4">
-                  Additional certification programs to enhance employability and technical expertise.
-                </p>
-                <ul className="space-y-2 text-gray-700">
-                  <li>• Programming language certifications</li>
-                  <li>• Cloud computing (AWS, Azure, GCP)</li>
-                  <li>• Data Science and AI/ML courses</li>
-                  <li>• Web development bootcamps</li>
-                  <li>• Cybersecurity training</li>
-                </ul>
-              </div>
+              <ModernCard variant="gradient" gradient="from-purple-50 to-pink-50" orangeAccent={true}>
+                <ModernCardBody>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Skill Development Programs</h3>
+                  <p className="text-gray-700 mb-4">
+                    Additional certification programs to enhance employability and technical expertise.
+                  </p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li>• Programming language certifications</li>
+                    <li>• Cloud computing (AWS, Azure, GCP)</li>
+                    <li>• Data Science and AI/ML courses</li>
+                    <li>• Web development bootcamps</li>
+                    <li>• Cybersecurity training</li>
+                  </ul>
+                </ModernCardBody>
+              </ModernCard>
 
-              <div className="bg-white p-8 rounded-lg shadow-lg">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Career Guidance</h3>
-                <p className="text-gray-700 mb-4">
-                  Dedicated placement cell providing continuous support and guidance throughout the placement process.
-                </p>
-                <ul className="space-y-2 text-gray-700">
-                  <li>• One-on-one career counseling</li>
-                  <li>• Higher studies guidance (MS, MBA)</li>
-                  <li>• Entrepreneurship support</li>
-                  <li>• Alumni mentorship program</li>
-                  <li>• Job portal access and notifications</li>
-                </ul>
-              </div>
+              <ModernCard variant="default" orangeAccent={true}>
+                <ModernCardBody>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Career Guidance</h3>
+                  <p className="text-gray-700 mb-4">
+                    Dedicated placement cell providing continuous support and guidance throughout the placement process.
+                  </p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li>• One-on-one career counseling</li>
+                    <li>• Higher studies guidance (MS, MBA)</li>
+                    <li>• Entrepreneurship support</li>
+                    <li>• Alumni mentorship program</li>
+                    <li>• Job portal access and notifications</li>
+                  </ul>
+                </ModernCardBody>
+              </ModernCard>
             </div>
           </div>
         </section>
@@ -224,43 +300,49 @@ const Placements: React.FC = () => {
         </section>
 
         {/* Alumni Success Stories */}
-        <section className="py-16 bg-gray-100">
+        <section className="py-16 bg-gradient-to-br from-gray-50 to-purple-50">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Alumni Success Stories</h2>
             
             <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
-              <div className="bg-white p-6 rounded-lg shadow-lg">
-                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Award className="h-8 w-8 text-orange-600" />
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 text-center">Rajesh Kumar</h3>
-                <p className="text-sm text-orange-600 mb-3 text-center">Software Engineer at Google</p>
-                <p className="text-gray-700 text-sm text-center">
-                  "SRIT provided me with strong fundamentals and excellent placement training that helped me crack interviews at top tech companies."
-                </p>
-              </div>
+              <ModernCard variant="default" orangeAccent={true}>
+                <ModernCardBody>
+                  <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Award className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 text-center">Rajesh Kumar</h3>
+                  <p className="text-sm text-orange-600 mb-3 text-center">Software Engineer at Google</p>
+                  <p className="text-gray-700 text-sm text-center">
+                    "SRIT provided me with strong fundamentals and excellent placement training that helped me crack interviews at top tech companies."
+                  </p>
+                </ModernCardBody>
+              </ModernCard>
 
-              <div className="bg-white p-6 rounded-lg shadow-lg">
-                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Award className="h-8 w-8 text-orange-600" />
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 text-center">Priya Sharma</h3>
-                <p className="text-sm text-orange-600 mb-3 text-center">Data Scientist at Amazon</p>
-                <p className="text-gray-700 text-sm text-center">
-                  "The technical training and project exposure at SRIT prepared me well for a career in data science and machine learning."
-                </p>
-              </div>
+              <ModernCard variant="gradient" gradient="from-blue-50 to-blue-100" orangeAccent={true}>
+                <ModernCardBody>
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Award className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 text-center">Priya Sharma</h3>
+                  <p className="text-sm text-blue-600 mb-3 text-center">Data Scientist at Amazon</p>
+                  <p className="text-gray-700 text-sm text-center">
+                    "The technical training and project exposure at SRIT prepared me well for a career in data science and machine learning."
+                  </p>
+                </ModernCardBody>
+              </ModernCard>
 
-              <div className="bg-white p-6 rounded-lg shadow-lg">
-                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Award className="h-8 w-8 text-orange-600" />
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 text-center">Anil Reddy</h3>
-                <p className="text-sm text-orange-600 mb-3 text-center">Project Manager at TCS</p>
-                <p className="text-gray-700 text-sm text-center">
-                  "SRIT's holistic approach to education, combining technical and soft skills, has been instrumental in my career growth."
-                </p>
-              </div>
+              <ModernCard variant="gradient" gradient="from-purple-50 to-pink-50" orangeAccent={true}>
+                <ModernCardBody>
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Award className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 text-center">Anil Reddy</h3>
+                  <p className="text-sm text-purple-600 mb-3 text-center">Project Manager at TCS</p>
+                  <p className="text-gray-700 text-sm text-center">
+                    "SRIT's holistic approach to education, combining technical and soft skills, has been instrumental in my career growth."
+                  </p>
+                </ModernCardBody>
+              </ModernCard>
             </div>
           </div>
         </section>

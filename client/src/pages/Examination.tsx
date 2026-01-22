@@ -3,37 +3,39 @@ import { Header } from '@/components/homepage/Header';
 import { Footer } from '@/components/homepage/Footer';
 import { Calendar, FileText, AlertCircle, CheckCircle } from 'lucide-react';
 import { useScrollToHash } from '@/hooks/useScrollToHash';
+import { OrangeBorder } from '@/components/common/OrangeBorder';
 
 const Examination: React.FC = () => {
   useScrollToHash();
   
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      <OrangeBorder />
       <Header />
       
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-orange-600 to-orange-500 text-white py-20">
+        <section className="bg-gradient-to-r from-orange-600 to-orange-500 text-white py-12 md:py-20">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Examination</h1>
-            <p className="text-xl max-w-3xl mx-auto">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Examination</h1>
+            <p className="text-base md:text-xl max-w-3xl mx-auto">
               Transparent and Fair Assessment System
             </p>
           </div>
         </section>
 
         {/* Examination System Overview */}
-        <section className="py-16">
+        <section className="py-12 md:py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Examination System</h2>
-              <p className="text-gray-700 mb-8 text-center">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 text-center">Examination System</h2>
+              <p className="text-sm md:text-base text-gray-700 mb-6 md:mb-8 text-center">
                 SRIT follows a comprehensive evaluation system combining internal assessments and semester-end examinations 
                 as per JNTUA regulations. The evaluation is designed to test both theoretical knowledge and practical skills.
               </p>
               
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-white p-6 rounded-lg shadow-lg">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                <div className="bg-[#FFE5D9] p-6 rounded-lg shadow-lg">
                   <h3 className="text-xl font-bold text-gray-900 mb-3">Internal Assessment (30 Marks)</h3>
                   <ul className="space-y-2 text-gray-700">
                     <li>• Two Mid-Term Examinations (20 marks)</li>
@@ -42,7 +44,7 @@ const Examination: React.FC = () => {
                   </ul>
                 </div>
                 
-                <div className="bg-white p-6 rounded-lg shadow-lg">
+                <div className="bg-[#FFE5D9] p-6 rounded-lg shadow-lg">
                   <h3 className="text-xl font-bold text-gray-900 mb-3">External Assessment (70 Marks)</h3>
                   <ul className="space-y-2 text-gray-700">
                     <li>• Semester End Examination</li>
@@ -57,11 +59,11 @@ const Examination: React.FC = () => {
         </section>
 
         {/* Examination Schedule */}
-        <section className="py-16 bg-white">
+        <section className="py-12 md:py-16 bg-white">
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-center mb-12">
-              <Calendar className="h-10 w-10 text-orange-600 mr-4" />
-              <h2 className="text-3xl font-bold text-gray-900">Examination Schedule 2026-27</h2>
+            <div className="flex items-center justify-center mb-8 md:mb-12">
+              <Calendar className="h-8 w-8 md:h-10 md:w-10 text-orange-600 mr-3 md:mr-4" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Examination Schedule 2026-27</h2>
             </div>
             
             <div className="max-w-5xl mx-auto space-y-8">

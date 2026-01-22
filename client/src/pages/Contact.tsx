@@ -3,6 +3,7 @@ import { Header } from '@/components/homepage/Header';
 import { Footer } from '@/components/homepage/Footer';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import { toast } from 'sonner';
+import { OrangeBorder } from '@/components/common/OrangeBorder';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -47,6 +48,7 @@ const Contact: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      <OrangeBorder />
       <Header />
       
       <main className="flex-grow">

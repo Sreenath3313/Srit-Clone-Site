@@ -41,7 +41,7 @@ import Placements from "./pages/Placements";
 import Committees from "./pages/Committees";
 import CommunityServices from "./pages/CommunityServices";
 import Chatbot from "./components/Chatbot";
-import { Component, ReactNode } from "react";
+import { Component, ReactNode, useEffect } from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -110,6 +110,14 @@ function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode;
 function AppRoutes() {
   const { isAuthenticated, user, loading } = useAuth();
   const location = useLocation();
+  
+  // Scroll to top on route change - fixes the scroll-to-top issue
+  useEffect(() => {
+    // Only scroll to top if there's no hash in the URL (for anchor links)
+    if (!location.hash) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [location.pathname]);
   
   if (loading) {
     return (

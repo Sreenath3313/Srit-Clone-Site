@@ -3,12 +3,14 @@ import { Header } from '@/components/homepage/Header';
 import { Footer } from '@/components/homepage/Footer';
 import { Heart, Users, TreePine, GraduationCap, Droplet, Book } from 'lucide-react';
 import { useScrollToHash } from '@/hooks/useScrollToHash';
+import { OrangeBorder } from '@/components/common/OrangeBorder';
 
 const CommunityServices: React.FC = () => {
   useScrollToHash();
   
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      <OrangeBorder />
       <Header />
       
       <main className="flex-grow">

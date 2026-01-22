@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Header } from '@/components/homepage/Header';
 import { Footer } from '@/components/homepage/Footer';
 import { Calendar, FileText, IndianRupee, CheckCircle, AlertCircle, Download } from 'lucide-react';
+import { OrangeBorder } from '@/components/common/OrangeBorder';
 import { useScrollToHash } from '@/hooks/useScrollToHash';
 
 const Admissions: React.FC = () => {
@@ -10,6 +11,7 @@ const Admissions: React.FC = () => {
   
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      <OrangeBorder />
       <Header />
       
       <main className="flex-grow">

@@ -1,11 +1,84 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Linkedin, Youtube, MapPin, Phone, Mail, ChevronRight } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin, Youtube, MapPin, Phone, Mail, ChevronRight, Send, Heart } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export const Footer: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      setSubscribed(true);
+      setTimeout(() => {
+        setSubscribed(false);
+        setEmail('');
+      }, 3000);
+    }
+  };
+
   return (
-    <footer className="bg-[#111] text-gray-400 text-sm font-sans">
+    <footer className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-gray-300 font-sans relative overflow-hidden">
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+          backgroundSize: '40px 40px'
+        }} />
+      </div>
+
+      {/* Newsletter Section */}
+      <div className="border-b border-white/10 relative z-10">
         <div className="container mx-auto px-4 py-12">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Stay <span className="gradient-text">Connected</span>
+              </h3>
+              <p className="text-gray-400 mb-8 text-lg">
+                Subscribe to our newsletter for latest updates and announcements
+              </p>
+              
+              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email address"
+                  required
+                  className="flex-1 px-6 py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent backdrop-blur-md transition-all"
+                />
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-gradient-to-r from-orange-500 to-purple-500 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-orange-500/50 transition-all"
+                >
+                  {subscribed ? (
+                    <>
+                      <Heart className="w-5 h-5" />
+                      <span>Subscribed!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      <span>Subscribe</span>
+                    </>
+                  )}
+                </motion.button>
+              </form>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-12 relative z-10">
             
             {/* Top Links Section */}
             <div className="border-b border-gray-800 pb-8 mb-8 flex flex-wrap justify-center gap-x-8 gap-y-2 text-xs uppercase tracking-wider text-gray-500">

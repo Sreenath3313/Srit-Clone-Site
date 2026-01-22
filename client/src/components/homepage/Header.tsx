@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Phone, Mail, User, BookOpen, Download, HelpCircle, GraduationCap, ChevronDown, Menu, X } from 'lucide-react';
+import { Phone, Mail, User, BookOpen, Download, HelpCircle, GraduationCap, ChevronDown, Menu, X, Search } from 'lucide-react';
 import { NavItem } from '@/types/homepage';
 import { latestNews } from '@/data/news';
+import { SearchBar } from './SearchBar';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Navigation structure with dropdown items
 const navItems: NavItem[] = [
@@ -112,6 +114,22 @@ const navItems: NavItem[] = [
 
 export const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [isSearchOpen, setIsSearchOpen] = React.useState(false);
+  const [isScrolled, setIsScrolled] = React.useState(false);
+  const [expandedMobileItem, setExpandedMobileItem] = React.useState<string | null>(null);
+  const isMobile = useIsMobile();
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const toggleMobileDropdown = (label: string) => {
+    setExpandedMobileItem(expandedMobileItem === label ? null : label);
+  };
 
   return (
     <header className="w-full flex flex-col font-sans">
@@ -146,117 +164,246 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Banner Area */}
-      <div className="bg-white px-2 md:px-4 py-2 border-b-4 border-primary/20">
-        <div className="container mx-auto">
-            {/* Desktop Banner Layout */}
-            <div className="hidden md:flex flex-row items-stretch border border-orange-500 p-1 bg-white">
-                
-                {/* Left Logo Box */}
-                <div className="w-[140px] flex-shrink-0 flex flex-col items-center border border-gray-300 mr-4 relative">
-                    <div className="flex-grow flex flex-col items-center justify-center p-2">
-                        {/* Logo Circle */}
-                        <div className="w-16 h-16 rounded-full bg-[#d84e18] flex items-center justify-center mb-1 overflow-hidden relative">
-                             {/* Abstract Bird/Swoosh */}
-                             <svg viewBox="0 0 100 100" className="w-full h-full p-2 text-black fill-current">
-                                <path d="M20 50 Q 50 20 80 50 T 90 40" stroke="black" strokeWidth="5" fill="none" />
-                                <path d="M15 55 Q 40 60 60 40" stroke="black" strokeWidth="3" fill="none" />
-                             </svg>
-                        </div>
-                        {/* SRIT Box */}
-                        <div className="border border-orange-500 px-2 py-0.5 mb-0.5">
-                            <span className="text-2xl font-bold text-gray-800 tracking-wide block leading-none">SRIT</span>
-                        </div>
-                        <div className="text-[0.6rem] text-gray-600 font-medium text-center leading-tight">
-                            Empowering Knowledge
-                        </div>
-                    </div>
-                    {/* Autonomous Tag */}
-                    <div className="w-full bg-[#d84e18] text-white text-center text-[0.65rem] font-bold py-1 mt-auto uppercase tracking-wider">
-                        AUTONOMOUS
-                    </div>
-                </div>
 
-                {/* Right Text Content */}
-                <div className="flex-grow flex flex-col justify-center text-center font-serif">
-                    <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight tracking-tight scale-y-105 mb-1">
-                        Srinivasa Ramanujan Institute of Technology
-                    </h1>
-                    <div className="text-sm font-bold text-gray-800 tracking-[0.2em] uppercase mb-1">
-                        AUTONOMOUS
-                    </div>
-                    <div className="text-lg text-gray-800 border-b border-orange-400 pb-1 mb-1 inline-block mx-auto px-8">
-                        Rotarypuram Village, BK Samudram Mandal, Ananthapuramu - 515701
-                    </div>
-                    <div className="text-base font-bold text-gray-800 flex items-center justify-center gap-1.5 flex-wrap">
-                        <span>Accredited by</span>
-                        <span className="text-[#d84e18]">NBA</span>
-                        <span>&</span>
-                        <span className="text-[#d84e18]">NAAC</span>
-                        <span>with</span>
-                        <span className="text-[#d84e18]">"A" Grade</span>
-                        <span>, Affiliated to</span>
-                        <span className="text-[#d84e18]">JNTUA</span>
-                        <span>, Ananthapuramu</span>
-                    </div>
-                </div>
+      {/* Modern Hero Header */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-orange-500 via-orange-400 to-purple-600">
+        {/* Decorative blur shapes */}
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-white/20 rounded-full blur-3xl" />
+        <div className="absolute top-20 -right-24 w-96 h-96 bg-black/20 rounded-full blur-3xl" />
+
+        <div className="relative container mx-auto px-6 py-12 md:py-16">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-10">
+
+            {/* Left: Logo + Title */}
+            <div className="flex items-center gap-6 text-white">
+              {/* Logo */}
+              <div className="w-32 h-32 rounded-3xl bg-white/95 flex items-center justify-center shadow-2xl p-3">
+
+  <img
+    src="/Srit.jpg"
+    alt="SRIT Logo"
+    className="w-full h-full object-contain"
+  />
+</div>
+
+
+              {/* Text */}
+              <div>
+                <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight">
+                  Srinivasa Ramanujan <br />
+                  <span className="text-white/90">Institute of Technology</span>
+                </h1>
+                <p className="mt-2 text-white/90 font-medium">
+                  Autonomous • NBA & NAAC “A” Grade • Affiliated to JNTUA
+                </p>
+                <p className="text-white/80 text-sm mt-1">
+                  Ananthapuramu – 515701
+                </p>
+              </div>
             </div>
 
-            {/* Mobile Banner Layout (Simplified) */}
-            <div className="md:hidden flex flex-col items-center text-center space-y-2 py-2">
-                 <div className="flex items-center gap-3">
-                     <div className="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center border-2 border-primary text-primary font-bold text-lg">SRIT</div>
-                     <div className="text-left">
-                         <h1 className="text-xl font-bold font-serif leading-tight text-gray-900">Srinivasa Ramanujan</h1>
-                         <h2 className="text-lg font-serif text-gray-800">Institute of Technology</h2>
-                     </div>
-                 </div>
-                 <div className="text-xs text-gray-600 font-medium">Ananthapuramu - 515701</div>
-                 <div className="text-xs font-bold text-primary">Autonomous | NBA & NAAC 'A' Grade</div>
+            {/* Right: Quick Actions */}
+            <div className="flex flex-col md:flex-row flex-wrap gap-4 w-full md:w-auto px-4 md:px-0">
+              <Link
+                to="/admissions"
+                className="px-6 py-4 md:py-3 rounded-xl font-bold shadow-lg transition-all text-center min-h-[56px] md:min-h-[48px] flex items-center justify-center bg-white text-orange-600 hover:scale-105"
+              >
+                Admissions
+              </Link>
+              <Link
+                to="/departments"
+                className="px-6 py-4 md:py-3 rounded-xl font-bold transition-all text-center min-h-[56px] md:min-h-[48px] flex items-center justify-center bg-white/20 text-white backdrop-blur hover:bg-white/30"
+              >
+                Departments
+              </Link>
+              <Link
+                to="/placements"
+                className="px-6 py-4 md:py-3 rounded-xl font-bold transition-all text-center min-h-[56px] md:min-h-[48px] flex items-center justify-center bg-black/30 text-white backdrop-blur hover:bg-black/40"
+              >
+                Placements
+              </Link>
             </div>
+          </div>
         </div>
+
       </div>
 
-      {/* Navigation */}
-      <div className="bg-white shadow-md sticky top-0 z-50">
+      {/* Navigation with enhanced animations */}
+      <motion.div 
+        className={`sticky top-0 z-50 border-b transition-all duration-500 ${
+          isScrolled 
+            ? 'bg-white shadow-xl border-gray-200' 
+            : 'bg-white/95 backdrop-blur-md shadow-lg border-gray-100'
+        }`}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+      >
         <div className="container mx-auto px-4">
             <div className="flex justify-between items-center md:hidden py-3">
-                 <span className="font-bold text-gray-700">Menu</span>
-                 <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                    {isMobileMenuOpen ? <X /> : <Menu />}
-                 </button>
+                 {!isMobileMenuOpen && <span className="font-bold text-gray-700">Menu</span>}
+                 <div className="flex items-center gap-2 ml-auto">
+                   <motion.button
+                     onClick={() => setIsSearchOpen(true)}
+                     whileHover={{ scale: 1.1 }}
+                     whileTap={{ scale: 0.9 }}
+                     className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                   >
+                     <Search className="text-primary w-5 h-5" />
+                   </motion.button>
+                   <motion.button 
+                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                     whileHover={{ scale: 1.1 }}
+                     whileTap={{ scale: 0.9 }}
+                     className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                   >
+                      {isMobileMenuOpen ? <X className="text-primary" /> : <Menu className="text-primary" />}
+                   </motion.button>
+                 </div>
             </div>
-            <nav className={`${isMobileMenuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row justify-center md:items-center w-full`}>
+            <motion.nav 
+              className={`${isMobileMenuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row justify-between md:items-center w-full`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+                <div className="flex flex-col md:flex-row flex-1 justify-center">
                 {navItems.map((item, index) => (
                     <div key={index} className="group relative">
-                        <Link 
-                          to={item.path || '#'} 
-                          className="block py-3 px-4 text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-50 md:hover:bg-transparent transition-colors flex items-center justify-between md:justify-start"
-                          onClick={() => setIsMobileMenuOpen(false)}
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.05 }}
                         >
-                            {item.label}
-                            {item.hasDropdown && <ChevronDown size={14} className="ml-1" />}
-                        </Link>
-                        {/* Dropdown */}
+                          {/* Mobile: Click-based with chevron toggle */}
+                          {isMobile && item.hasDropdown ? (
+                            <button
+                              onClick={() => toggleMobileDropdown(item.label)}
+                              className="block w-full py-4 px-5 text-sm font-semibold text-gray-700 hover:text-primary transition-all duration-300 flex items-center justify-between relative"
+                            >
+                              <span className="relative">
+                                {item.label}
+                              </span>
+                              <motion.div
+                                animate={{ rotate: expandedMobileItem === item.label ? 180 : 0 }}
+                                transition={{ duration: 0.3 }}
+                              >
+                                <ChevronDown size={14} className="ml-1" />
+                              </motion.div>
+                            </button>
+                          ) : (
+                            <Link 
+                              to={item.path || '#'} 
+                              className="block py-4 px-5 text-sm font-semibold text-gray-700 hover:text-primary transition-all duration-300 flex items-center justify-between md:justify-start relative"
+                              onClick={() => {
+                                setIsMobileMenuOpen(false);
+                                setExpandedMobileItem(null);
+                              }}
+                            >
+                              <span className="relative">
+                                {item.label}
+                                {/* Animated underline for desktop */}
+                                <motion.span 
+                                  className="hidden md:block absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-purple-500 group-hover:w-full transition-all duration-300"
+                                />
+                              </span>
+                              {item.hasDropdown && !isMobile && (
+                                <motion.div
+                                  whileHover={{ rotate: 180 }}
+                                  transition={{ duration: 0.3 }}
+                                >
+                                  <ChevronDown size={14} className="ml-1" />
+                                </motion.div>
+                              )}
+                            </Link>
+                          )}
+                        </motion.div>
+                        
+                        {/* Dropdown Menu */}
                         {item.hasDropdown && item.dropdownItems && (
-                            <div className="hidden group-hover:block absolute left-0 top-full w-48 bg-white shadow-lg border-t-2 border-primary py-2 z-50">
+                          <>
+                            {/* Desktop: Hover-based dropdown */}
+                            {!isMobile && (
+                              <motion.div 
+                                className="hidden group-hover:block absolute left-0 top-full w-56 bg-white/95 backdrop-blur-md shadow-2xl border-t-2 border-primary py-2 z-50 rounded-b-lg overflow-hidden"
+                                initial={{ opacity: 0, y: -10 }}
+                                whileHover={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.2 }}
+                              >
                                 {item.dropdownItems.map((dropItem, dropIndex) => (
+                                  <motion.div
+                                    key={dropIndex}
+                                    initial={{ opacity: 0, x: -10 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: dropIndex * 0.03 }}
+                                  >
                                     <Link 
-                                      key={dropIndex}
                                       to={dropItem.path || '#'} 
-                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                      className="block px-5 py-3 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-purple-50 hover:text-primary transition-all duration-200 relative group/item"
                                       onClick={() => setIsMobileMenuOpen(false)}
                                     >
-                                      {dropItem.label}
+                                      <motion.span
+                                        className="relative"
+                                        whileHover={{ x: 5 }}
+                                        transition={{ duration: 0.2 }}
+                                      >
+                                        {dropItem.label}
+                                      </motion.span>
+                                      <motion.span 
+                                        className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0.5 bg-primary group-hover/item:w-1 transition-all duration-200"
+                                      />
                                     </Link>
+                                  </motion.div>
                                 ))}
-                            </div>
+                              </motion.div>
+                            )}
+                            
+                            {/* Mobile: Click-based expandable submenu */}
+                            {isMobile && expandedMobileItem === item.label && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="bg-gray-50 overflow-hidden"
+                              >
+                                {item.dropdownItems.map((dropItem, dropIndex) => (
+                                  <Link
+                                    key={dropIndex}
+                                    to={dropItem.path || '#'}
+                                    className="block px-8 py-3 text-sm text-gray-600 hover:bg-orange-50 hover:text-primary transition-all duration-200 border-l-2 border-transparent hover:border-primary"
+                                    onClick={() => {
+                                      setIsMobileMenuOpen(false);
+                                      setExpandedMobileItem(null);
+                                    }}
+                                  >
+                                    {dropItem.label}
+                                  </Link>
+                                ))}
+                              </motion.div>
+                            )}
+                          </>
                         )}
                     </div>
                 ))}
-            </nav>
+                </div>
+                
+                {/* Search Icon */}
+                <motion.button
+                  onClick={() => setIsSearchOpen(true)}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-purple-500 text-white hover:shadow-lg transition-all duration-300"
+                >
+                  <Search className="w-5 h-5" />
+                  <span className="font-semibold">Search</span>
+                </motion.button>
+            </motion.nav>
         </div>
-      </div>
+      </motion.div>
+
+      {/* Search Modal */}
+      <SearchBar isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
       {/* Ticker */}
       <div className="bg-primary text-white py-2 overflow-hidden relative flex items-center ticker-wrapper">

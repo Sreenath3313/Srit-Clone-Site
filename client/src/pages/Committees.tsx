@@ -3,30 +3,32 @@ import { Header } from '@/components/homepage/Header';
 import { Footer } from '@/components/homepage/Footer';
 import { Users, Shield, BookOpen, Scale } from 'lucide-react';
 import { useScrollToHash } from '@/hooks/useScrollToHash';
+import { OrangeBorder } from '@/components/common/OrangeBorder';
 
 const Committees: React.FC = () => {
   useScrollToHash();
   
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      <OrangeBorder />
       <Header />
       
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-orange-600 to-orange-500 text-white py-20">
+        <section className="bg-gradient-to-r from-orange-600 to-orange-500 text-white py-12 md:py-20">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Committees</h1>
-            <p className="text-xl max-w-3xl mx-auto">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Committees</h1>
+            <p className="text-base md:text-xl max-w-3xl mx-auto">
               Ensuring Excellence, Safety, and Fair Practices in Education
             </p>
           </div>
         </section>
 
         {/* Introduction */}
-        <section className="py-16">
+        <section className="py-12 md:py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <p className="text-lg text-gray-700">
+              <p className="text-base md:text-lg text-gray-700">
                 SRIT has established various committees to ensure smooth functioning of academic activities, 
                 maintain discipline, protect student rights, and promote overall well-being of the college community.
               </p>
@@ -35,15 +37,15 @@ const Committees: React.FC = () => {
         </section>
 
         {/* Academic Committees */}
-        <section className="py-16 bg-white">
+        <section className="py-12 md:py-16 bg-white">
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-center mb-12">
-              <BookOpen className="h-10 w-10 text-orange-600 mr-4" />
-              <h2 className="text-3xl font-bold text-gray-900">Academic Committees</h2>
+            <div className="flex items-center justify-center mb-8 md:mb-12">
+              <BookOpen className="h-8 w-8 md:h-10 md:w-10 text-orange-600 mr-3 md:mr-4" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Academic Committees</h2>
             </div>
             
             <div className="max-w-5xl mx-auto space-y-6">
-              <div className="bg-gray-50 p-8 rounded-lg shadow-lg">
+              <div className="bg-gray-50 p-8 rounded-lg shadow-lg border-l-4 border-primary hover:border-l-6 hover:translate-x-1 transition-all duration-300">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Board of Studies (BoS)</h3>
                 <p className="text-gray-700 mb-4">
                   The Board of Studies is responsible for designing and updating curriculum, recommending syllabus changes, 
@@ -66,7 +68,7 @@ const Committees: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-8 rounded-lg shadow-lg">
+              <div className="bg-gray-50 p-8 rounded-lg shadow-lg border-l-4 border-primary hover:border-l-6 hover:translate-x-1 transition-all duration-300">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Academic Council</h3>
                 <p className="text-gray-700 mb-4">
                   The Academic Council oversees all academic matters, approves new programs, monitors teaching-learning processes, 
@@ -89,7 +91,7 @@ const Committees: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-8 rounded-lg shadow-lg">
+              <div className="bg-gray-50 p-8 rounded-lg shadow-lg border-l-4 border-primary hover:border-l-6 hover:translate-x-1 transition-all duration-300">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Examination Committee</h3>
                 <p className="text-gray-700 mb-4">
                   Manages all examination-related activities including scheduling, conduct, evaluation, and result processing.
@@ -115,7 +117,7 @@ const Committees: React.FC = () => {
             </div>
             
             <div className="max-w-5xl mx-auto space-y-6">
-              <div className="bg-white p-8 rounded-lg shadow-lg">
+              <div className="bg-white p-8 rounded-lg shadow-lg border-l-4 border-primary hover:border-l-6 hover:translate-x-1 transition-all duration-300">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Discipline Committee</h3>
                 <p className="text-gray-700 mb-4">
                   Ensures maintenance of discipline among students, addresses behavioral issues, and enforces code of conduct.
@@ -252,7 +254,7 @@ const Committees: React.FC = () => {
             </div>
             
             <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-lg shadow-lg">
+              <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-primary hover:border-l-6 hover:translate-x-1 transition-all duration-300">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Placement Cell</h3>
                 <p className="text-gray-700 text-sm mb-3">
                   Coordinates campus recruitment, training programs, and career guidance for students.
@@ -260,7 +262,7 @@ const Committees: React.FC = () => {
                 <p className="text-sm text-orange-600">placements@srit.ac.in</p>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-lg">
+              <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-primary hover:border-l-6 hover:translate-x-1 transition-all duration-300">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Sports Committee</h3>
                 <p className="text-gray-700 text-sm mb-3">
                   Promotes sports activities, organizes tournaments, and manages sports facilities.
@@ -268,7 +270,7 @@ const Committees: React.FC = () => {
                 <p className="text-sm text-orange-600">sports@srit.ac.in</p>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-lg">
+              <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-primary hover:border-l-6 hover:translate-x-1 transition-all duration-300">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Cultural Committee</h3>
                 <p className="text-gray-700 text-sm mb-3">
                   Organizes cultural events, fests, and extracurricular activities throughout the year.
@@ -276,7 +278,7 @@ const Committees: React.FC = () => {
                 <p className="text-sm text-orange-600">cultural@srit.ac.in</p>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-lg">
+              <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-primary hover:border-l-6 hover:translate-x-1 transition-all duration-300">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Library Committee</h3>
                 <p className="text-gray-700 text-sm mb-3">
                   Manages library resources, recommends new books, and oversees digital library services.
@@ -284,7 +286,7 @@ const Committees: React.FC = () => {
                 <p className="text-sm text-orange-600">library@srit.ac.in</p>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-lg">
+              <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-primary hover:border-l-6 hover:translate-x-1 transition-all duration-300">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Infrastructure Committee</h3>
                 <p className="text-gray-700 text-sm mb-3">
                   Plans and monitors maintenance of campus infrastructure and facilities.
@@ -292,7 +294,7 @@ const Committees: React.FC = () => {
                 <p className="text-sm text-orange-600">infrastructure@srit.ac.in</p>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-lg">
+              <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-primary hover:border-l-6 hover:translate-x-1 transition-all duration-300">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Alumni Committee</h3>
                 <p className="text-gray-700 text-sm mb-3">
                   Maintains alumni network, organizes reunions, and facilitates alumni-student interaction.
