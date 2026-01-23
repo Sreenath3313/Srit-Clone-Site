@@ -1,13 +1,17 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
+import { Canvas3DErrorBoundary } from './Canvas3DErrorBoundary';
+import { CyberFallbackBackground } from './CyberFallbackBackground';
+import { RENDER_TIMEOUT_MS } from './constants3D';
 
 interface ParticlesProps {
   count?: number;
+  isMobile?: boolean;
 }
 
-function Particles({ count = 5000 }: ParticlesProps) {
+function Particles({ count = 5000, isMobile = false }: ParticlesProps) {
   const ref = useRef<THREE.Points>(null);
 
   const particlesPosition = useMemo(() => {
@@ -26,8 +30,13 @@ function Particles({ count = 5000 }: ParticlesProps) {
 
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.1) * 0.1;
-      ref.current.rotation.y = state.clock.elapsedTime * 0.05;
+      // Simplify animation on mobile
+      if (isMobile) {
+        ref.current.rotation.y = state.clock.elapsedTime * 0.03;
+      } else {
+        ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.1) * 0.1;
+        ref.current.rotation.y = state.clock.elapsedTime * 0.05;
+      }
     }
   });
 
@@ -36,10 +45,10 @@ function Particles({ count = 5000 }: ParticlesProps) {
       <PointMaterial
         transparent
         color="#ff6b35"
-        size={0.02}
+        size={isMobile ? 0.015 : 0.02}
         sizeAttenuation={true}
         depthWrite={false}
-        opacity={0.6}
+        opacity={isMobile ? 0.5 : 0.6}
       />
     </Points>
   );
@@ -48,17 +57,53 @@ function Particles({ count = 5000 }: ParticlesProps) {
 interface ParticleBackgroundProps {
   className?: string;
   particleCount?: number;
+  isMobile?: boolean;
 }
 
 export const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ 
   className = '', 
-  particleCount = 5000 
+  particleCount = 5000,
+  isMobile = false
 }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasTimedOut, setHasTimedOut] = useState(false);
+
+  useEffect(() => {
+    // Timeout fallback after configured timeout
+    const timer = setTimeout(() => {
+      if (!isLoaded) {
+        setHasTimedOut(true);
+      }
+    }, RENDER_TIMEOUT_MS);
+
+    return () => clearTimeout(timer);
+  }, [isLoaded]);
+
+  // Show CSS fallback if timed out
+  if (hasTimedOut && !isLoaded) {
+    return (
+      <div className={`absolute inset-0 ${className}`}>
+        <CyberFallbackBackground />
+      </div>
+    );
+  }
+
   return (
     <div className={`absolute inset-0 ${className}`}>
-      <Canvas camera={{ position: [0, 0, 3], fov: 75 }}>
-        <Particles count={particleCount} />
-      </Canvas>
+      <Canvas3DErrorBoundary>
+        <Canvas 
+          camera={{ position: [0, 0, 3], fov: 75 }}
+          dpr={isMobile ? [1, 1] : [1, 2]}
+          performance={{ min: 0.5 }}
+          gl={{ 
+            antialias: !isMobile,
+            powerPreference: "high-performance"
+          }}
+          onCreated={() => setIsLoaded(true)}
+        >
+          <Particles count={particleCount} isMobile={isMobile} />
+        </Canvas>
+      </Canvas3DErrorBoundary>
     </div>
   );
 };

@@ -11,7 +11,10 @@ import {
   StaggerContainer,
   StaggerItem,
   TiltCard
-} from '@/components/animations';   
+} from '@/components/animations';
+import { CyberFallbackBackground } from '@/components/animations/CyberFallbackBackground';
+import { useIsMobile } from '@/hooks/useIsMobile';
+import { PARTICLE_COUNT, GRID_COUNT } from '@/components/animations/constants3D';
 
 // Quick access cards
 const quickAccessCards = [
@@ -22,23 +25,29 @@ const quickAccessCards = [
 ];
 
 export const HeroCyber: React.FC = () => {
+  const isMobile = useIsMobile();
+
+  // Determine particle and grid counts based on device
+  const particleCount = isMobile ? PARTICLE_COUNT.HERO_CYBER_MOBILE : PARTICLE_COUNT.HERO_CYBER_DESKTOP;
+  const gridCount = isMobile ? GRID_COUNT.HERO_CYBER_MOBILE : GRID_COUNT.HERO_CYBER_DESKTOP;
+
   return (
     <div className="w-full">
       {/* HERO SECTION - DSU Cyber27 Style */}
       <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
         {/* Hexagonal Grid Background */}
-        <Suspense fallback={null}>
-          <HexagonalGrid className="opacity-30" gridCount={60} />
+        <Suspense fallback={<div className="absolute inset-0"><CyberFallbackBackground /></div>}>
+          <HexagonalGrid className="opacity-30" gridCount={gridCount} isMobile={isMobile} />
         </Suspense>
 
         {/* 3D Geometric Shapes */}
-        <Suspense fallback={null}>
-          <GeometricShapes3D className="opacity-40" />
+        <Suspense fallback={<div className="absolute inset-0"><CyberFallbackBackground /></div>}>
+          <GeometricShapes3D className="opacity-40" isMobile={isMobile} />
         </Suspense>
 
         {/* 3D Particle Background */}
-        <Suspense fallback={null}>
-          <ParticleBackground className="opacity-50" particleCount={4000} />
+        <Suspense fallback={<div className="absolute inset-0"><CyberFallbackBackground /></div>}>
+          <ParticleBackground className="opacity-50" particleCount={particleCount} isMobile={isMobile} />
         </Suspense>
 
         {/* Gradient Orbs for Lighting */}

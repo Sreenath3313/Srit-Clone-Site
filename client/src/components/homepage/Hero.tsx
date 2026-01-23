@@ -4,6 +4,9 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { BookOpen, GraduationCap, Coins, FileText, ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 import { campusImages } from '@/data/campusImages';
 import { FloatingElements, StaggerContainer, StaggerItem, ParticleBackground, GradientOrb, TiltCard } from '@/components/animations';
+import { CyberFallbackBackground } from '@/components/animations/CyberFallbackBackground';
+import { useIsMobile } from '@/hooks/useIsMobile';
+import { PARTICLE_COUNT } from '@/components/animations/constants3D';
 import ReactPlayer from 'react-player';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation, EffectFade } from 'swiper/modules';
@@ -29,6 +32,10 @@ export const Hero: React.FC = () => {
   const [showVideo, setShowVideo] = useState(false);
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 150]);
+  const isMobile = useIsMobile();
+
+  // Determine particle count based on device
+  const particleCount = isMobile ? PARTICLE_COUNT.HERO_MOBILE : PARTICLE_COUNT.HERO_DESKTOP;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -75,8 +82,8 @@ export const Hero: React.FC = () => {
         {!showVideo && (
           <>
             {/* 3D Particle Background */}
-            <Suspense fallback={<div className="absolute inset-0 bg-gradient-to-br from-slate-900 to-purple-900" />}>
-              <ParticleBackground className="opacity-60" particleCount={3000} />
+            <Suspense fallback={<div className="absolute inset-0"><CyberFallbackBackground /></div>}>
+              <ParticleBackground className="opacity-60" particleCount={particleCount} isMobile={isMobile} />
             </Suspense>
             
             {/* Gradient Orbs */}

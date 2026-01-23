@@ -1,12 +1,15 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { Canvas3DErrorBoundary } from './Canvas3DErrorBoundary';
+import { RENDER_TIMEOUT_MS } from './constants3D';
 
 interface HexGridProps {
   count?: number;
+  isMobile?: boolean;
 }
 
-function HexGrid({ count = 50 }: HexGridProps) {
+function HexGrid({ count = 50, isMobile = false }: HexGridProps) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
 
   const hexagons = useMemo(() => {
@@ -33,11 +36,15 @@ function HexGrid({ count = 50 }: HexGridProps) {
         const matrix = new THREE.Matrix4();
         const time = state.clock.elapsedTime;
         
+        // Simplified animation on mobile
+        const animationSpeed = isMobile ? 0.3 : 0.5;
+        const rotationSpeed = isMobile ? 0.05 : 0.1;
+        
         // Floating animation
-        const floatY = hex.y + Math.sin(time * 0.5 + i * 0.1) * 0.2;
+        const floatY = hex.y + Math.sin(time * animationSpeed + i * 0.1) * 0.2;
         
         // Rotation animation
-        const rotation = hex.rotation + time * 0.1;
+        const rotation = hex.rotation + time * rotationSpeed;
         
         matrix.makeRotationZ(rotation);
         matrix.setPosition(hex.x, floatY, hex.z);
@@ -86,17 +93,60 @@ function HexGrid({ count = 50 }: HexGridProps) {
 interface HexagonalGridProps {
   className?: string;
   gridCount?: number;
+  isMobile?: boolean;
 }
 
 export const HexagonalGrid: React.FC<HexagonalGridProps> = ({ 
   className = '', 
-  gridCount = 50 
+  gridCount = 50,
+  isMobile = false
 }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasTimedOut, setHasTimedOut] = useState(false);
+
+  useEffect(() => {
+    // Timeout fallback after configured timeout
+    const timer = setTimeout(() => {
+      if (!isLoaded) {
+        setHasTimedOut(true);
+      }
+    }, RENDER_TIMEOUT_MS);
+
+    return () => clearTimeout(timer);
+  }, [isLoaded]);
+
+  // Show CSS fallback if timed out
+  if (hasTimedOut && !isLoaded) {
+    return (
+      <div className={`absolute inset-0 ${className}`}>
+        <div 
+          className="absolute inset-0 opacity-10" 
+          style={{
+            backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 107, 53, 0.3) 2px, rgba(255, 107, 53, 0.3) 3px),
+                             repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255, 107, 53, 0.3) 2px, rgba(255, 107, 53, 0.3) 3px)`,
+            backgroundSize: '60px 60px'
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={`absolute inset-0 ${className}`}>
-      <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
-        <HexGrid count={gridCount} />
-      </Canvas>
+      <Canvas3DErrorBoundary>
+        <Canvas 
+          camera={{ position: [0, 0, 10], fov: 75 }}
+          dpr={isMobile ? [1, 1] : [1, 2]}
+          performance={{ min: 0.5 }}
+          gl={{ 
+            antialias: !isMobile,
+            powerPreference: "high-performance"
+          }}
+          onCreated={() => setIsLoaded(true)}
+        >
+          <HexGrid count={gridCount} isMobile={isMobile} />
+        </Canvas>
+      </Canvas3DErrorBoundary>
     </div>
   );
 };

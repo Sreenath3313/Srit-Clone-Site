@@ -15,3 +15,5 @@ export { HexagonalGrid } from './HexagonalGrid';
 export { MouseFollowEffect } from './MouseFollowEffect';
 export { ScrollIndicator } from './ScrollIndicator';
 export { GeometricShapes3D } from './GeometricShapes3D';
+export { Canvas3DErrorBoundary } from './Canvas3DErrorBoundary';
+export { CyberFallbackBackground } from './CyberFallbackBackground';

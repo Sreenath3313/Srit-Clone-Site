@@ -8,22 +8,31 @@ import {
   GeometricShapes3D, 
   ParticleBackground 
 } from '@/components/animations';
+import { CyberFallbackBackground } from '@/components/animations/CyberFallbackBackground';
+import { useIsMobile } from '@/hooks/useIsMobile';
+import { PARTICLE_COUNT, GRID_COUNT } from '@/components/animations/constants3D';
 
 export const About: React.FC = () => {
+  const isMobile = useIsMobile();
+
+  // Determine particle and grid counts based on device
+  const particleCount = isMobile ? PARTICLE_COUNT.ABOUT_MOBILE : PARTICLE_COUNT.ABOUT_DESKTOP;
+  const gridCount = isMobile ? GRID_COUNT.ABOUT_MOBILE : GRID_COUNT.ABOUT_DESKTOP;
+
   return (
     <section className="py-20 relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
 
       {/* Cyber Background Layers */}
-      <Suspense fallback={null}>
-        <HexagonalGrid className="opacity-20" gridCount={40} />
+      <Suspense fallback={<div className="absolute inset-0"><CyberFallbackBackground /></div>}>
+        <HexagonalGrid className="opacity-20" gridCount={gridCount} isMobile={isMobile} />
       </Suspense>
 
-      <Suspense fallback={null}>
-        <GeometricShapes3D className="opacity-30" />
+      <Suspense fallback={<div className="absolute inset-0"><CyberFallbackBackground /></div>}>
+        <GeometricShapes3D className="opacity-30" isMobile={isMobile} />
       </Suspense>
 
-      <Suspense fallback={null}>
-        <ParticleBackground className="opacity-40" particleCount={1500} />
+      <Suspense fallback={<div className="absolute inset-0"><CyberFallbackBackground /></div>}>
+        <ParticleBackground className="opacity-40" particleCount={particleCount} isMobile={isMobile} />
       </Suspense>
 
       {/* Gradient Orbs */}
