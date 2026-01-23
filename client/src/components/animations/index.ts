@@ -10,3 +10,8 @@ export { WaveBackground } from './WaveBackground';
 export { TiltCard } from './TiltCard';
 export { PageTransition } from './PageTransition';
 export { GradientOrb } from './GradientOrb';
+export { Logo3D } from './Logo3D';
+export { HexagonalGrid } from './HexagonalGrid';
+export { MouseFollowEffect } from './MouseFollowEffect';
+export { ScrollIndicator } from './ScrollIndicator';
+export { GeometricShapes3D } from './GeometricShapes3D';

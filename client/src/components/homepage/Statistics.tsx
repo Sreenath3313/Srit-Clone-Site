@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
 import { motion } from 'framer-motion';
 import { Users, BookOpen, Award, Building } from 'lucide-react';
+import { 
+  HexagonalGrid, 
+  GeometricShapes3D, 
+  ParticleBackground 
+} from '@/components/animations';
 
 const stats = [
   {
@@ -42,18 +47,27 @@ export const Statistics: React.FC = () => {
   });
 
   return (
-    <section className="relative py-20 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-          backgroundSize: '40px 40px'
-        }} />
-      </div>
+    <section className="relative py-24 overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
 
-      {/* Gradient orbs */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
+      {/* Cyber Background */}
+      <Suspense fallback={null}>
+        <HexagonalGrid className="opacity-20" gridCount={40} />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <GeometricShapes3D className="opacity-30" />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <ParticleBackground className="opacity-40" particleCount={1500} />
+      </Suspense>
+
+      {/* Glow Orbs */}
+      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-orange-500/20 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-orange-400/20 rounded-full blur-3xl" />
+
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/40 to-slate-950/80" />
 
       <div className="container mx-auto px-4 relative z-10" ref={ref}>
         <motion.div
@@ -80,6 +94,7 @@ export const Statistics: React.FC = () => {
               className="relative group"
             >
               <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 hover:border-white/40 transition-all duration-500 hover:shadow-2xl hover:shadow-orange-500/20 hover:-translate-y-2">
+                
                 {/* Icon */}
                 <div className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${stat.color} text-white mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                   {stat.icon}

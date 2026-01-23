@@ -677,6 +677,11 @@ html.smooth-scroll {
     }
   }
 
+  /* Radial gradient utility */
+  .bg-gradient-radial {
+    background-image: radial-gradient(circle, var(--tw-gradient-stops));
+  }
+
   /* Tablet breakpoint */
   @media (min-width: 641px) and (max-width: 1024px) {
     .tablet-two-column {

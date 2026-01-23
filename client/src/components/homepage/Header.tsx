@@ -165,68 +165,7 @@ export const Header: React.FC = () => {
       </div>
 
 
-      {/* Modern Hero Header */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-orange-500 via-orange-400 to-purple-600">
-        {/* Decorative blur shapes */}
-        <div className="absolute -top-24 -left-24 w-96 h-96 bg-white/20 rounded-full blur-3xl" />
-        <div className="absolute top-20 -right-24 w-96 h-96 bg-black/20 rounded-full blur-3xl" />
-
-        <div className="relative container mx-auto px-6 py-12 md:py-16">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-10">
-
-            {/* Left: Logo + Title */}
-            <div className="flex items-center gap-6 text-white">
-              {/* Logo */}
-              <div className="w-32 h-32 rounded-3xl bg-white/95 flex items-center justify-center shadow-2xl p-3">
-
-  <img
-    src="/Srit.jpg"
-    alt="SRIT Logo"
-    className="w-full h-full object-contain"
-  />
-</div>
-
-
-              {/* Text */}
-              <div>
-                <h1 className="text-3xl md:text-5xl font-black leading-tight tracking-tight">
-                  Srinivasa Ramanujan <br />
-                  <span className="text-white/90">Institute of Technology</span>
-                </h1>
-                <p className="mt-2 text-white/90 font-medium">
-                  Autonomous • NBA & NAAC “A” Grade • Affiliated to JNTUA
-                </p>
-                <p className="text-white/80 text-sm mt-1">
-                  Ananthapuramu – 515701
-                </p>
-              </div>
-            </div>
-
-            {/* Right: Quick Actions */}
-            <div className="flex flex-col md:flex-row flex-wrap gap-4 w-full md:w-auto px-4 md:px-0">
-              <Link
-                to="/admissions"
-                className="px-6 py-4 md:py-3 rounded-xl font-bold shadow-lg transition-all text-center min-h-[56px] md:min-h-[48px] flex items-center justify-center bg-white text-orange-600 hover:scale-105"
-              >
-                Admissions
-              </Link>
-              <Link
-                to="/departments"
-                className="px-6 py-4 md:py-3 rounded-xl font-bold transition-all text-center min-h-[56px] md:min-h-[48px] flex items-center justify-center bg-white/20 text-white backdrop-blur hover:bg-white/30"
-              >
-                Departments
-              </Link>
-              <Link
-                to="/placements"
-                className="px-6 py-4 md:py-3 rounded-xl font-bold transition-all text-center min-h-[56px] md:min-h-[48px] flex items-center justify-center bg-black/30 text-white backdrop-blur hover:bg-black/40"
-              >
-                Placements
-              </Link>
-            </div>
-          </div>
-        </div>
-
-      </div>
+      
 
       {/* Navigation with enhanced animations */}
       <motion.div 

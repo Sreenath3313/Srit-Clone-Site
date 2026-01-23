@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
@@ -6,13 +6,16 @@ import {
   BookOpen, 
   Users, 
   Calendar, 
-  FileText, 
   Award,
   TrendingUp,
-  Mail,
   Phone,
   Download
 } from 'lucide-react';
+import { 
+  HexagonalGrid, 
+  GeometricShapes3D, 
+  ParticleBackground 
+} from '@/components/animations';
 
 const quickLinks = [
   {
@@ -83,18 +86,27 @@ const quickLinks = [
 
 export const QuickLinks: React.FC = () => {
   return (
-    <section className="py-20 bg-white relative overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'linear-gradient(to right, #FF6B35 1px, transparent 1px), linear-gradient(to bottom, #FF6B35 1px, transparent 1px)',
-          backgroundSize: '60px 60px'
-        }} />
-      </div>
+    <section className="relative py-24 overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
 
-      {/* Gradient orbs */}
-      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-orange-200/30 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-purple-200/30 rounded-full blur-3xl" />
+      {/* Cyber Background */}
+      <Suspense fallback={null}>
+        <HexagonalGrid className="opacity-20" gridCount={40} />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <GeometricShapes3D className="opacity-30" />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <ParticleBackground className="opacity-40" particleCount={1500} />
+      </Suspense>
+
+      {/* Glow Orbs */}
+      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-orange-500/20 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-orange-400/20 rounded-full blur-3xl" />
+
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/40 to-slate-950/80" />
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
@@ -104,10 +116,10 @@ export const QuickLinks: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Quick <span className="gradient-text">Access</span>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Quick <span className="text-orange-400">Access</span>
           </h2>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
             Everything you need, just a click away
           </p>
         </motion.div>
@@ -122,7 +134,8 @@ export const QuickLinks: React.FC = () => {
               transition={{ duration: 0.5, delay: index * 0.05 }}
             >
               <Link to={item.link}>
-                <div className="group relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100 overflow-hidden h-full">
+                <div className="group relative bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-white/20 overflow-hidden h-full">
+                  
                   {/* Gradient background on hover */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
                   
@@ -132,15 +145,15 @@ export const QuickLinks: React.FC = () => {
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors duration-300">
+                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors duration-300">
                     {item.title}
                   </h3>
-                  <p className="text-gray-600 mb-3 text-sm">
+                  <p className="text-gray-300 mb-3 text-sm">
                     {item.description}
                   </p>
 
                   {/* Stats badge */}
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full text-xs font-semibold text-gray-700 group-hover:bg-orange-100 group-hover:text-orange-700 transition-colors duration-300">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-xs font-semibold text-gray-200 group-hover:bg-orange-500/20 group-hover:text-orange-300 transition-colors duration-300">
                     {item.stats}
                   </div>
 
@@ -152,7 +165,7 @@ export const QuickLinks: React.FC = () => {
                   </div>
 
                   {/* Animated border */}
-                  <div className={`absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-orange-500/50 transition-all duration-500`} />
+                  <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-orange-500/50 transition-all duration-500" />
                 </div>
               </Link>
             </motion.div>

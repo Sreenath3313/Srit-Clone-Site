@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Header } from '@/components/homepage/Header';
-import { Hero } from '@/components/homepage/Hero';
+import { HeroCyber } from '@/components/homepage/HeroCyber';
 import { Statistics } from '@/components/homepage/Statistics';
 import { About } from '@/components/homepage/About';
 import { DepartmentShowcase } from '@/components/homepage/DepartmentShowcase';
@@ -16,6 +16,7 @@ import { Footer } from '@/components/homepage/Footer';
 import { CampusGallery } from '@/components/homepage/CampusGallery';
 import Chatbot from '@/components/Chatbot';
 import { OrangeBorder } from '@/components/common/OrangeBorder';
+import { MouseFollowEffect } from '@/components/animations';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -31,9 +32,10 @@ const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <OrangeBorder />
+      <MouseFollowEffect />
       <Header />
       <main className="flex-grow">
-        <Hero />
+        <HeroCyber />
         <Statistics />
         <About />
         <DepartmentShowcase />
