@@ -37,3 +37,19 @@ export const useIsMobile = (): boolean => {
 
   return isMobile;
 };
+
+/**
+ * Hook to detect Android devices specifically
+ * Export Android detection for specific Android optimizations
+ */
+export const useIsAndroid = (): boolean => {
+  const [isAndroid, setIsAndroid] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsAndroid(/Android/i.test(navigator.userAgent));
+    }
+  }, []);
+
+  return isAndroid;
+};
