@@ -30,8 +30,11 @@ const HexGrid = memo(function HexGrid({ count = 50, isMobile = false }: HexGridP
     return temp;
   }, [count]);
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (meshRef.current) {
+      // Limit delta to prevent huge jumps
+      const limitedDelta = Math.min(delta, 0.1);
+      
       hexagons.forEach((hex, i) => {
         const matrix = new THREE.Matrix4();
         const time = state.clock.elapsedTime;
@@ -137,13 +140,18 @@ export const HexagonalGrid: React.FC<HexagonalGridProps> = memo(function Hexagon
         <Canvas 
           camera={{ position: [0, 0, 10], fov: 75 }}
           dpr={isMobile ? [1, 1] : [1, 2]}
-          performance={{ min: 0.5 }}
           gl={{ 
             antialias: !isMobile,
-            powerPreference: "high-performance"
+            powerPreference: "high-performance",
+            alpha: true,
+            stencil: false,
+            depth: true
           }}
-          onCreated={() => setIsLoaded(true)}
-          frameloop="demand"
+          onCreated={({ gl }) => {
+            gl.setClearColor(0x000000, 0);
+            setIsLoaded(true);
+          }}
+          frameloop="always"
         >
           <HexGrid count={gridCount} isMobile={isMobile} />
         </Canvas>

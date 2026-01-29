@@ -100,6 +100,21 @@
     --sidebar-accent: 24 95% 53%;
     --sidebar-border: 215 28% 17%;
   }
+
+  .high-contrast {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 100%;
+    --primary: 24 100% 60%;
+    --primary-foreground: 0 0% 0%;
+    --border: 0 0% 100%;
+    --input: 0 0% 20%;
+  }
+
+  .high-contrast * {
+    border-color: hsl(var(--border)) !important;
+  }
 }
 
 @layer base {

@@ -2,11 +2,11 @@ import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BookOpen, GraduationCap, Coins, FileText } from 'lucide-react';
+import { TypeAnimation } from 'react-type-animation';
 import { 
   Logo3D, 
   HexagonalGrid, 
   GeometricShapes3D, 
-  ParticleBackground, 
   ScrollIndicator,
   StaggerContainer,
   StaggerItem,
@@ -14,7 +14,7 @@ import {
 } from '@/components/animations';
 import { CyberFallbackBackground } from '@/components/animations/CyberFallbackBackground';
 import { useIsMobile } from '@/hooks/useIsMobile';
-import { PARTICLE_COUNT, GRID_COUNT } from '@/components/animations/constants3D';
+import { GRID_COUNT } from '@/components/animations/constants3D';
 
 // Quick access cards
 const quickAccessCards = [
@@ -27,64 +27,58 @@ const quickAccessCards = [
 export const HeroCyber: React.FC = () => {
   const isMobile = useIsMobile();
 
-  // Determine particle and grid counts based on device
-  const particleCount = isMobile ? PARTICLE_COUNT.HERO_CYBER_MOBILE : PARTICLE_COUNT.HERO_CYBER_DESKTOP;
+  // Determine grid count based on device
   const gridCount = isMobile ? GRID_COUNT.HERO_CYBER_MOBILE : GRID_COUNT.HERO_CYBER_DESKTOP;
 
   return (
     <div className="w-full">
       {/* HERO SECTION - DSU Cyber27 Style */}
       <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-        {/* Hexagonal Grid Background */}
-        <Suspense fallback={<div className="absolute inset-0"><CyberFallbackBackground /></div>}>
-          <HexagonalGrid className="opacity-30" gridCount={gridCount} isMobile={isMobile} />
-        </Suspense>
 
-        {/* 3D Geometric Shapes */}
-        <Suspense fallback={<div className="absolute inset-0"><CyberFallbackBackground /></div>}>
-          <GeometricShapes3D className="opacity-40" isMobile={isMobile} />
-        </Suspense>
+        {/* 🎥 VIDEO BACKGROUND */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <video
+  src="/video.mp4"
+  autoPlay
+  loop
+  muted
+  playsInline
+  preload="auto"
+  className="absolute inset-0 w-full h-full object-cover"
+  style={{
+    transform: "translateZ(0)",
+    backfaceVisibility: "hidden",
+    willChange: "transform"
+  }}
+/>
 
-        {/* 3D Particle Background */}
-        <Suspense fallback={<div className="absolute inset-0"><CyberFallbackBackground /></div>}>
-          <ParticleBackground className="opacity-50" particleCount={particleCount} isMobile={isMobile} />
-        </Suspense>
-
-        {/* Gradient Orbs for Lighting */}
-        <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-gradient-radial from-orange-600/20 via-orange-500/10 to-transparent blur-3xl -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-gradient-radial from-orange-500/20 via-orange-400/10 to-transparent blur-3xl translate-x-1/2 translate-y-1/2" />
-        
-        {/* Dark overlay for depth */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/50 to-slate-950/80" />
-
+          {/* Overlay gradient for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-950/60 to-slate-950/90" />
+        </div>
         {/* Content Container */}
         <div className="absolute inset-0 flex flex-col items-center justify-center px-4 z-10">
           {/* ✅ SRIT LOGO */}
-<motion.div
-  initial={{ opacity: 0, scale: 0.85, y: -20 }}
-  animate={{ opacity: 1, scale: 1, y: 0 }}
-  transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
-  className="mb-5 flex justify-center"
->
-  <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-md border border-orange-500/30 shadow-[0_0_50px_rgba(255,107,53,0.4)]">
-    <img
-      src="/Srit.jpg"
-      alt="SRIT Logo"
-      className="w-[140px] md:w-[170px] lg:w-[200px] object-contain"
-    />
-  </div>
-</motion.div>
-
-
-  
-
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
+            className="mb-5 flex justify-center"
+          >
+            <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-md border border-orange-500/30 shadow-[0_0_50px_rgba(255,107,53,0.4)]">
+              <img
+                src="/Srit.jpg"
+                alt="SRIT Logo"
+                className="w-[100px] md:w-[120px] lg:w-[140px] object-contain"
+              />
+            </div>
+          </motion.div>
 
           {/* Title with Glow Effect */}
           <motion.h1
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 1, ease: [0.4, 0, 0.2, 1] }}
-            className="text-5xl md:text-7xl lg:text-8xl font-bold text-white text-center mb-6 leading-tight"
+            className="text-5xl md:text-6xl lg:text-7xl font-bold text-white text-center mb-6 leading-tight"
             style={{ 
               textShadow: '0 0 60px rgba(255, 107, 53, 0.8), 0 0 100px rgba(255, 107, 53, 0.4)' 
             }}
@@ -96,7 +90,7 @@ export const HeroCyber: React.FC = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 1, ease: [0.4, 0, 0.2, 1] }}
-            className="text-3xl md:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 text-center mb-8"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 text-center mb-8"
             style={{ 
               textShadow: '0 0 40px rgba(255, 107, 53, 0.5)' 
             }}
@@ -104,54 +98,66 @@ export const HeroCyber: React.FC = () => {
             INSTITUTE OF TECHNOLOGY
           </motion.h2>
 
-          {/* Subtitle */}
-<motion.p
-  initial={{ opacity: 0, filter: 'blur(10px)' }}
-  animate={{ opacity: 1, filter: 'blur(0px)' }}
-  transition={{ delay: 1.2, duration: 1, ease: [0.4, 0, 0.2, 1] }}
-  className="text-base md:text-lg lg:text-xl text-gray-300 text-center max-w-4xl mb-12 px-4"
->
-  Empowering Innovation • Shaping Tomorrow's Leaders
-</motion.p>
+          {/* Subtitle with Typing Animation */}
+          <motion.div
+            initial={{ opacity: 0, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, filter: 'blur(0px)' }}
+            transition={{ delay: 1.2, duration: 1, ease: [0.4, 0, 0.2, 1] }}
+            className="text-base md:text-lg lg:text-xl text-gray-300 text-center max-w-4xl mb-12 px-4"
+          >
+            <TypeAnimation
+              sequence={[
+                'Empowering Innovation',
+                2000,
+                'Shaping Future Engineers',
+                2000,
+                'Excellence in Engineering Education',
+                2000,
+              ]}
+              wrapper="span"
+              speed={50}
+              repeat={Infinity}
+              className="inline-block"
+            />
+          </motion.div>
 
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.4, duration: 0.8 }}
+            className="flex flex-wrap gap-6 justify-center"
+          >
+            {/* Apply Now */}
+            <Link to="/apply-now">
+              <motion.button
+                whileHover={{ 
+                  scale: 1.05, 
+                  boxShadow: '0 0 25px rgba(255, 107, 53, 0.6), 0 12px 25px rgba(0, 0, 0, 0.3)' 
+                }}
+                whileTap={{ scale: 0.97 }}
+                className="relative px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-semibold text-base shadow-xl overflow-hidden group"
+              >
+                <span className="relative z-10">Apply Now</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+              </motion.button>
+            </Link>
 
-        {/* CTA Buttons */}
-<motion.div
-  initial={{ opacity: 0, y: 30 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 1.4, duration: 0.8 }}
-  className="flex flex-wrap gap-6 justify-center"
->
-  {/* Apply Now */}
-  <Link to="/admissions">
-    <motion.button
-      whileHover={{ 
-        scale: 1.05, 
-        boxShadow: '0 0 25px rgba(255, 107, 53, 0.6), 0 12px 25px rgba(0, 0, 0, 0.3)' 
-      }}
-      whileTap={{ scale: 0.97 }}
-      className="relative px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl font-semibold text-base shadow-xl overflow-hidden group"
-    >
-      <span className="relative z-10">Apply Now</span>
-      <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-    </motion.button>
-  </Link>
-
-  {/* Explore Campus */}
-  <Link to="/about">
-    <motion.button
-      whileHover={{ 
-        scale: 1.05, 
-        boxShadow: '0 0 20px rgba(255, 255, 255, 0.25)' 
-      }}
-      whileTap={{ scale: 0.97 }}
-      className="px-6 py-3 bg-white/10 backdrop-blur-md text-white rounded-xl font-semibold text-base border border-orange-500/50 hover:bg-white/20 hover:border-orange-500 transition-all duration-300"
-    >
-      Explore Campus
-    </motion.button>
-  </Link>
-</motion.div>
+            {/* Explore Campus */}
+            <Link to="/explore-campus">
+              <motion.button
+                whileHover={{ 
+                  scale: 1.05, 
+                  boxShadow: '0 0 20px rgba(255, 255, 255, 0.25)' 
+                }}
+                whileTap={{ scale: 0.97 }}
+                className="px-6 py-3 bg-white/10 backdrop-blur-md text-white rounded-xl font-semibold text-base border border-orange-500/50 hover:bg-white/20 hover:border-orange-500 transition-all duration-300"
+              >
+                Explore Campus
+              </motion.button>
+            </Link>
+          </motion.div>
         </div>
 
         {/* Animated Corner Accents */}

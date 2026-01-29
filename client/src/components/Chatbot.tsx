@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { X, Send, MessageCircle, Minimize2 } from 'lucide-react';
 
 interface Message {
@@ -68,9 +69,9 @@ const faqs: FAQ[] = [
 ];
 
 const greetings = [
-  "Hello! I'm your ERP assistant. How can I help you today?",
-  "Hi there! Ask me anything about the College ERP system.",
-  "Welcome! I'm here to help you with the ERP system."
+  "Hello! I'm your SRIT assistant. How can I help you today?",
+  "Hi there! Ask me anything about the College SRIT system.",
+  "Welcome! I'm here to help you with the SRIT system."
 ];
 
 function getBotResponse(userMessage: string): string {
@@ -128,7 +129,7 @@ export default function Chatbot() {
 
   // Load chat history from localStorage
   useEffect(() => {
-    const savedMessages = localStorage.getItem('erp-chat-history');
+    const savedMessages = localStorage.getItem('srit-chat-history');
     if (savedMessages) {
       try {
         const parsed = JSON.parse(savedMessages);
@@ -153,7 +154,7 @@ export default function Chatbot() {
   // Save messages to localStorage
   useEffect(() => {
     if (messages.length > 0) {
-      localStorage.setItem('erp-chat-history', JSON.stringify(messages));
+      localStorage.setItem('srit-chat-history', JSON.stringify(messages));
     }
   }, [messages]);
 
@@ -212,13 +213,39 @@ export default function Chatbot() {
 
   if (!isOpen) {
     return (
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 z-50"
-        aria-label="Open chat"
-      >
-        <MessageCircle className="w-6 h-6" />
-      </button>
+      <div className="fixed bottom-6 right-6 z-50">
+        <motion.button
+          onClick={() => setIsOpen(true)}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          animate={{ y: [0, -10, 0] }}
+          transition={{ 
+            y: {
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }
+          }}
+          className="relative w-14 h-14 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full shadow-lg flex items-center justify-center transition-all hover:shadow-2xl"
+          aria-label="Open chat"
+        >
+          <MessageCircle className="w-6 h-6" />
+          {/* Notification Badge with Pulse */}
+          <motion.span
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white"
+          >
+            1
+          </motion.span>
+          {/* Pulse Ring Animation */}
+          <motion.span
+            animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="absolute inset-0 bg-primary rounded-full"
+          />
+        </motion.button>
+      </div>
     );
   }
 
@@ -234,7 +261,7 @@ export default function Chatbot() {
               <MessageCircle className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-semibold text-sm">ERP Assistant</h3>
+              <h3 className="font-semibold text-sm">SRIT Assistant</h3>
               <p className="text-xs opacity-90">Always here to help</p>
             </div>
           </div>

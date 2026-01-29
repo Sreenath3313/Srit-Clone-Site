@@ -28,6 +28,8 @@ const Committees = lazy(() => import("./pages/Committees"));
 const CommunityServices = lazy(() => import("./pages/CommunityServices"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ChangePassword = lazy(() => import("./pages/ChangePassword"));
+const ApplyNow = lazy(() => import("./pages/ApplyNow"));
+const ExploreCampus = lazy(() => import("./pages/ExploreCampus"));
 
 // Admin pages
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
@@ -186,6 +188,8 @@ function AppRoutes() {
         <Route path="/campus/library" element={<LibraryGallery />} />
         <Route path="/campus/labs" element={<LabsGallery />} />
         <Route path="/campus/hostel" element={<HostelGallery />} />
+        <Route path="/apply-now" element={<ApplyNow />} />
+        <Route path="/explore-campus" element={<ExploreCampus />} />
         <Route path="/login" element={isAuthenticated ? <Navigate to={`/${user?.role}`} replace /> : <Login />} />
         
         {/* Admin Routes */}

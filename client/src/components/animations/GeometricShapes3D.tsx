@@ -16,16 +16,19 @@ interface FloatingShape3DProps {
 const FloatingShape3D = memo(function FloatingShape3D({ position, rotation = 0, type, isMobile = false }: FloatingShape3DProps) {
   const meshRef = useRef<THREE.Mesh>(null);
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (meshRef.current) {
+      // Limit delta to prevent huge jumps
+      const limitedDelta = Math.min(delta, 0.1);
+      
       // Simplified rotation on mobile
       if (isMobile) {
-        meshRef.current.rotation.y += 0.01;
+        meshRef.current.rotation.y += 0.008 * limitedDelta * 60;
         meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime + rotation) * 0.3;
       } else {
-        // Full rotation animation
-        meshRef.current.rotation.x += 0.01;
-        meshRef.current.rotation.y += 0.015;
+        // Full rotation animation with slightly reduced speeds
+        meshRef.current.rotation.x += 0.008 * limitedDelta * 60;
+        meshRef.current.rotation.y += 0.012 * limitedDelta * 60;
         
         // Floating animation
         meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime + rotation) * 0.5;
@@ -171,13 +174,18 @@ export const GeometricShapes3D: React.FC<GeometricShapes3DProps> = memo(function
         <Canvas 
           camera={{ position: [0, 0, 8], fov: 60 }}
           dpr={isMobile ? [1, 1] : [1, 2]}
-          performance={{ min: 0.5 }}
           gl={{ 
             antialias: !isMobile,
-            powerPreference: "high-performance"
+            powerPreference: "high-performance",
+            alpha: true,
+            stencil: false,
+            depth: true
           }}
-          onCreated={() => setIsLoaded(true)}
-          frameloop="demand"
+          onCreated={({ gl }) => {
+            gl.setClearColor(0x000000, 0);
+            setIsLoaded(true);
+          }}
+          frameloop="always"
         >
           <Scene isMobile={isMobile} />
         </Canvas>

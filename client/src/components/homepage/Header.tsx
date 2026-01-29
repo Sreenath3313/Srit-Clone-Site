@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Phone, Mail, User, BookOpen, Download, HelpCircle, GraduationCap, ChevronDown, Menu, X, Search } from 'lucide-react';
+import { Phone, Mail, User, BookOpen, Download, HelpCircle, GraduationCap, ChevronDown, Menu, X, Search, Moon, Sun } from 'lucide-react';
 import { NavItem } from '@/types/homepage';
 import { latestNews } from '@/data/news';
 import { SearchBar } from './SearchBar';
@@ -117,6 +117,13 @@ export const Header: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [expandedMobileItem, setExpandedMobileItem] = React.useState<string | null>(null);
+  const [darkMode, setDarkMode] = React.useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('darkMode');
+      return saved ? JSON.parse(saved) : false;
+    }
+    return false;
+  });
   const isMobile = useIsMobile();
 
   React.useEffect(() => {
@@ -126,6 +133,17 @@ export const Header: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('darkMode', JSON.stringify(darkMode));
+      if (darkMode) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+  }, [darkMode]);
 
   const toggleMobileDropdown = (label: string) => {
     setExpandedMobileItem(expandedMobileItem === label ? null : label);
@@ -327,16 +345,34 @@ export const Header: React.FC = () => {
                 ))}
                 </div>
                 
-                {/* Search Icon */}
-                <motion.button
-                  onClick={() => setIsSearchOpen(true)}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-purple-500 text-white hover:shadow-lg transition-all duration-300"
-                >
-                  <Search className="w-5 h-5" />
-                  <span className="font-semibold">Search</span>
-                </motion.button>
+                {/* Dark Mode Toggle & Search Icons */}
+                <div className="hidden md:flex items-center gap-2">
+                  {/* Dark Mode Toggle */}
+                  <motion.button
+                    onClick={() => setDarkMode(!darkMode)}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300"
+                    aria-label="Toggle dark mode"
+                  >
+                    {darkMode ? (
+                      <Sun className="w-5 h-5 text-orange-500" />
+                    ) : (
+                      <Moon className="w-5 h-5 text-gray-700" />
+                    )}
+                  </motion.button>
+                  
+                  {/* Search Icon */}
+                  <motion.button
+                    onClick={() => setIsSearchOpen(true)}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-purple-500 text-white hover:shadow-lg transition-all duration-300"
+                  >
+                    <Search className="w-5 h-5" />
+                    <span className="font-semibold">Search</span>
+                  </motion.button>
+                </div>
             </motion.nav>
         </div>
       </motion.div>
@@ -344,17 +380,38 @@ export const Header: React.FC = () => {
       {/* Search Modal */}
       <SearchBar isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
-      {/* Ticker */}
-      <div className="bg-primary text-white py-2 overflow-hidden relative flex items-center ticker-wrapper">
-          <div className="absolute left-0 bg-primary z-10 px-4 py-2 font-bold shadow-lg whitespace-nowrap">
+      {/* Enhanced News Ticker */}
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="bg-gradient-to-r from-orange-600 to-orange-500 text-white py-2 overflow-hidden relative flex items-center ticker-wrapper shadow-lg"
+      >
+          <motion.div 
+            className="absolute left-0 bg-gradient-to-r from-orange-700 to-orange-600 z-10 px-4 py-2 font-bold shadow-lg whitespace-nowrap flex items-center gap-2"
+            whileHover={{ scale: 1.05 }}
+          >
+              <motion.span
+                animate={{ 
+                  scale: [1, 1.2, 1],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="inline-block"
+              >
+                🔔
+              </motion.span>
               LATEST NEWS
-          </div>
-          <div className="w-full overflow-hidden flex pl-32">
+          </motion.div>
+          <div className="w-full overflow-hidden flex pl-36 md:pl-40">
               <div className="ticker-text text-sm font-medium whitespace-nowrap inline-block">
                   {latestNews} {latestNews}
               </div>
           </div>
-      </div>
+      </motion.div>
     </header>
   );
 };

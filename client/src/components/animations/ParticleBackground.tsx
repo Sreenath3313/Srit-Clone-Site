@@ -28,14 +28,17 @@ const Particles = memo(function Particles({ count = 5000, isMobile = false }: Pa
     return positions;
   }, [count]);
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (ref.current) {
+      // Limit delta to prevent huge jumps
+      const limitedDelta = Math.min(delta, 0.1);
+      
       // Simplify animation on mobile
       if (isMobile) {
-        ref.current.rotation.y = state.clock.elapsedTime * 0.03;
+        ref.current.rotation.y += 0.03 * limitedDelta * 60;
       } else {
         ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.1) * 0.1;
-        ref.current.rotation.y = state.clock.elapsedTime * 0.05;
+        ref.current.rotation.y += 0.05 * limitedDelta * 60;
       }
     }
   });
@@ -48,7 +51,7 @@ const Particles = memo(function Particles({ count = 5000, isMobile = false }: Pa
         size={isMobile ? 0.015 : 0.02}
         sizeAttenuation={true}
         depthWrite={false}
-        opacity={isMobile ? 0.5 : 0.6}
+        opacity={isMobile ? 0.6 : 0.7}
       />
     </Points>
   );
@@ -94,13 +97,18 @@ export const ParticleBackground: React.FC<ParticleBackgroundProps> = memo(functi
         <Canvas 
           camera={{ position: [0, 0, 3], fov: 75 }}
           dpr={isMobile ? [1, 1] : [1, 2]}
-          performance={{ min: 0.5 }}
           gl={{ 
             antialias: !isMobile,
-            powerPreference: "high-performance"
+            powerPreference: "high-performance",
+            alpha: true,
+            stencil: false,
+            depth: true
           }}
-          onCreated={() => setIsLoaded(true)}
-          frameloop="demand"
+          onCreated={({ gl }) => {
+            gl.setClearColor(0x000000, 0);
+            setIsLoaded(true);
+          }}
+          frameloop="always"
         >
           <Particles count={particleCount} isMobile={isMobile} />
         </Canvas>
