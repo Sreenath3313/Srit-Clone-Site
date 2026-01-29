@@ -1,7 +1,7 @@
 import React from 'react';
 import { Header } from '@/components/homepage/Header';
 import { Footer } from '@/components/homepage/Footer';
-import { Code, Palette, Trophy, Users } from 'lucide-react';
+import { Code, Palette, Users } from 'lucide-react';
 import { useScrollToHash } from '@/hooks/useScrollToHash';
 import { OrangeBorder } from '@/components/common/OrangeBorder';
 
@@ -265,43 +265,6 @@ const StudentChapters: React.FC = () => {
                   </p>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Sports Clubs */}
-        <section className="py-12 md:py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-center mb-8 md:mb-12">
-              <Trophy className="h-8 w-8 md:h-10 md:w-10 text-orange-600 mr-3 md:mr-4" />
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Sports Clubs</h2>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 max-w-6xl mx-auto">
-              {[
-                { name: 'Cricket', gradient: 'from-green-400 to-emerald-500' },
-                { name: 'Football', gradient: 'from-blue-400 to-cyan-500' },
-                { name: 'Basketball', gradient: 'from-orange-400 to-red-500' },
-                { name: 'Volleyball', gradient: 'from-yellow-400 to-orange-500' },
-                { name: 'Badminton', gradient: 'from-purple-400 to-pink-500' },
-                { name: 'Table Tennis', gradient: 'from-indigo-400 to-purple-500' },
-                { name: 'Chess', gradient: 'from-gray-600 to-gray-800' },
-                { name: 'Athletics', gradient: 'from-red-400 to-pink-500' },
-                { name: 'Kabaddi', gradient: 'from-amber-400 to-orange-600' },
-                { name: 'Yoga', gradient: 'from-teal-400 to-green-500' }
-              ].map((sport) => (
-                <div key={sport.name} className="relative bg-gray-50 rounded-lg shadow overflow-hidden group hover:shadow-lg transition-all duration-300">
-                  {/* Background gradient with reduced opacity */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${sport.gradient} opacity-20 group-hover:opacity-30 transition-opacity duration-300`}></div>
-                  
-                  {/* Content */}
-                  <div className="relative p-4 text-center min-h-[100px] flex items-center justify-center">
-                    <h3 className="font-bold text-gray-900 text-sm md:text-base">{sport.name}</h3>
-                  </div>
-                  
-                  {/* Orange accent border on hover */}
-                  <div className="absolute inset-0 border-2 border-transparent group-hover:border-primary rounded-lg transition-colors duration-300"></div>
-                </div>
-              ))}
             </div>
           </div>
         </section>

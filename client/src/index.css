@@ -56,6 +56,8 @@
     --gradient-primary: linear-gradient(135deg, hsl(24, 95%, 53%) 0%, hsl(24, 95%, 45%) 100%);
     --gradient-dark: linear-gradient(135deg, hsl(222, 47%, 11%) 0%, hsl(215, 28%, 17%) 100%);
     --gradient-card: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(210, 20%, 98%) 100%);
+    --gradient-orange-light: linear-gradient(135deg, hsl(24, 100%, 70%) 0%, hsl(24, 95%, 53%) 100%);
+    --gradient-orange-vibrant: linear-gradient(135deg, hsl(24, 95%, 53%) 0%, hsl(24, 100%, 60%) 50%, hsl(24, 95%, 53%) 100%);
 
     --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.05);
     --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.1), 0 2px 4px -2px hsl(0 0% 0% / 0.1);
@@ -199,12 +201,13 @@
 
   .sidebar-link {
     @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-sidebar-foreground/70 
-           transition-all duration-200 hover:bg-sidebar-muted hover:text-sidebar-foreground;
+           transition-all duration-200 hover:bg-sidebar-muted hover:text-sidebar-foreground
+           hover:pl-5;
   }
 
   .sidebar-link-active {
     @apply flex items-center gap-3 px-4 py-2.5 rounded-lg 
-           bg-sidebar-accent text-white font-medium;
+           bg-sidebar-accent text-white font-medium shadow-lg;
   }
 
   .page-title {
@@ -225,12 +228,26 @@
     background: var(--gradient-dark);
   }
 
+  .gradient-orange-light {
+    background: var(--gradient-orange-light);
+  }
+
+  .gradient-orange-vibrant {
+    background: var(--gradient-orange-vibrant);
+  }
+
   .shadow-card {
     box-shadow: var(--shadow-md);
   }
 
   .shadow-card-lg {
     box-shadow: var(--shadow-lg);
+  }
+
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .animate-fade-in {
@@ -258,6 +275,24 @@
   @keyframes slideInRight {
     from { opacity: 0; transform: translateX(-10px); }
     to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes pulse-subtle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
+
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .animate-pulse-subtle {
+    animation: pulse-subtle 2s ease-in-out infinite;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.2s ease-out;
   }
 
   @keyframes scan {
@@ -310,29 +345,30 @@
   animation-play-state: paused;
 }
 
-/* Glassmorphism Effects */
+/* Glassmorphism Effects - Optimized */
 .glass-effect {
   background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .glass-effect-strong {
   background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* 3D Tilt Card Effect */
+/* 3D Tilt Card Effect - Optimized */
 .tilt-card {
   transform-style: preserve-3d;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 .tilt-card:hover {
   transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale(1.02);
+  will-change: transform;
 }
 
 /* Gradient Overlay Animations */
@@ -744,4 +780,35 @@ img, video, iframe, embed, object {
     padding-left: 2rem;
     padding-right: 2rem;
   }
+}
+
+/* Performance Optimizations */
+/* Strategic will-change usage - only on interactive elements */
+.btn-primary:hover,
+.btn-secondary:hover,
+.card-hover:hover {
+  will-change: transform;
+}
+
+/* Optimize animations for better performance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* GPU acceleration for transforms */
+.gpu-accelerate {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Lazy loading optimization */
+img[loading="lazy"] {
+  content-visibility: auto;
 }

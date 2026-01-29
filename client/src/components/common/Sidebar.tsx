@@ -71,6 +71,15 @@ const adminNavItems: NavItem[] = [
       </svg>
     ),
   },
+  {
+    label: 'Profile',
+    path: '/admin/profile',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+      </svg>
+    ),
+  },
 ];
 
 const facultyNavItems: NavItem[] = [
@@ -189,14 +198,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-sidebar z-50 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed top-0 left-0 h-full w-64 bg-sidebar z-50 transform transition-transform duration-300 ease-in-out lg:translate-x-0 shadow-2xl ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="flex items-center gap-3 px-6 py-5 border-b border-sidebar-border">
-            <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
+            <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center shadow-lg">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
@@ -216,10 +225,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   <li key={item.path}>
                     <Link
                       to={item.path}
-                      className={isActive ? 'sidebar-link-active' : 'sidebar-link'}
+                      className={`group ${isActive ? 'sidebar-link-active' : 'sidebar-link'}`}
                       onClick={onClose}
                     >
-                      {item.icon}
+                      <span className="transition-transform duration-200 group-hover:scale-110">{item.icon}</span>
                       <span>{item.label}</span>
                     </Link>
                   </li>

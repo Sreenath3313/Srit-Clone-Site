@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useState, useEffect } from 'react';
+import React, { useRef, useMemo, useState, useEffect, memo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
@@ -11,7 +11,7 @@ interface ParticlesProps {
   isMobile?: boolean;
 }
 
-function Particles({ count = 5000, isMobile = false }: ParticlesProps) {
+const Particles = memo(function Particles({ count = 5000, isMobile = false }: ParticlesProps) {
   const ref = useRef<THREE.Points>(null);
 
   const particlesPosition = useMemo(() => {
@@ -52,7 +52,7 @@ function Particles({ count = 5000, isMobile = false }: ParticlesProps) {
       />
     </Points>
   );
-}
+});
 
 interface ParticleBackgroundProps {
   className?: string;
@@ -60,11 +60,11 @@ interface ParticleBackgroundProps {
   isMobile?: boolean;
 }
 
-export const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ 
+export const ParticleBackground: React.FC<ParticleBackgroundProps> = memo(function ParticleBackground({ 
   className = '', 
   particleCount = 5000,
   isMobile = false
-}) => {
+}) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasTimedOut, setHasTimedOut] = useState(false);
 
@@ -100,10 +100,11 @@ export const ParticleBackground: React.FC<ParticleBackgroundProps> = ({
             powerPreference: "high-performance"
           }}
           onCreated={() => setIsLoaded(true)}
+          frameloop="demand"
         >
           <Particles count={particleCount} isMobile={isMobile} />
         </Canvas>
       </Canvas3DErrorBoundary>
     </div>
   );
-};
+});

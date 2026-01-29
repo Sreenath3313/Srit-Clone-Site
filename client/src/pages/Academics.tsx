@@ -126,9 +126,9 @@ const Academics: React.FC = () => {
         </section>
 
         {/* Academic Calendar */}
-        <section id="calendar" className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
+        <section id="calendar" className="py-16 bg-gradient-to-br from-orange-50/50 to-blue-50/50">
           <div className="container mx-auto px-4">
-            <ModernCard variant="default" className="max-w-4xl mx-auto" orangeAccent={true}>
+            <ModernCard variant="gradient" gradient="from-orange-50 to-blue-100/50" className="max-w-4xl mx-auto" orangeAccent={true}>
               <ModernCardBody>
                 <div className="flex items-center mb-6">
                   <Calendar className="h-8 w-8 text-orange-600 mr-3" />

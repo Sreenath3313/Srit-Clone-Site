@@ -4,44 +4,71 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import DashboardLayout from "./layouts/DashboardLayout";
-import Login from "./pages/Login";
-import HomePage from "./pages/HomePage";
-import About from "./pages/About";
-import Departments from "./pages/Departments";
-import DepartmentDetail from "./pages/DepartmentDetail";
-import Admissions from "./pages/Admissions";
-import Contact from "./pages/Contact";
-import Courses from "./pages/Courses";
-import AdmissionProcedure from "./pages/AdmissionProcedure";
-import FeesStructure from "./pages/FeesStructure";
-import Scholarships from "./pages/Scholarships";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminDepartments from "./pages/admin/AdminDepartments";
-import AdminSections from "./pages/admin/AdminSections";
-import AdminSubjects from "./pages/admin/AdminSubjects";
-import AdminStudents from "./pages/admin/AdminStudents";
-import AdminFaculty from "./pages/admin/AdminFaculty";
-import AdminAssignments from "./pages/admin/AdminAssignments";
-import FacultyDashboard from "./pages/faculty/FacultyDashboard";
-import FacultyAttendance from "./pages/faculty/FacultyAttendance";
-import FacultyMarks from "./pages/faculty/FacultyMarks";
-import StudentDashboard from "./pages/student/StudentDashboard";
-import StudentProfile from "./pages/student/StudentProfile";
-import StudentAttendance from "./pages/student/StudentAttendance";
-import StudentMarks from "./pages/student/StudentMarks";
-import StudentTimetable from "./pages/student/StudentTimetable";
-import ChangePassword from "./pages/ChangePassword";
-import NotFound from "./pages/NotFound";
-import Academics from "./pages/Academics";
-import CampusLife from "./pages/CampusLife";
-import StudentChapters from "./pages/StudentChapters";
-import Examination from "./pages/Examination";
-import Placements from "./pages/Placements";
-import Committees from "./pages/Committees";
-import CommunityServices from "./pages/CommunityServices";
-import Chatbot from "./components/Chatbot";
-import { Component, ReactNode, useEffect } from "react";
+import { Component, ReactNode, useEffect, lazy, Suspense } from "react";
+
+// Lazy load all page components
+const DashboardLayout = lazy(() => import("./layouts/DashboardLayout"));
+const Login = lazy(() => import("./pages/Login"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const About = lazy(() => import("./pages/About"));
+const Departments = lazy(() => import("./pages/Departments"));
+const DepartmentDetail = lazy(() => import("./pages/DepartmentDetail"));
+const Admissions = lazy(() => import("./pages/Admissions"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Courses = lazy(() => import("./pages/Courses"));
+const AdmissionProcedure = lazy(() => import("./pages/AdmissionProcedure"));
+const FeesStructure = lazy(() => import("./pages/FeesStructure"));
+const Scholarships = lazy(() => import("./pages/Scholarships"));
+const Academics = lazy(() => import("./pages/Academics"));
+const CampusLife = lazy(() => import("./pages/CampusLife"));
+const StudentChapters = lazy(() => import("./pages/StudentChapters"));
+const Examination = lazy(() => import("./pages/Examination"));
+const Placements = lazy(() => import("./pages/Placements"));
+const Committees = lazy(() => import("./pages/Committees"));
+const CommunityServices = lazy(() => import("./pages/CommunityServices"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const ChangePassword = lazy(() => import("./pages/ChangePassword"));
+
+// Admin pages
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const AdminDepartments = lazy(() => import("./pages/admin/AdminDepartments"));
+const AdminSections = lazy(() => import("./pages/admin/AdminSections"));
+const AdminSubjects = lazy(() => import("./pages/admin/AdminSubjects"));
+const AdminStudents = lazy(() => import("./pages/admin/AdminStudents"));
+const AdminFaculty = lazy(() => import("./pages/admin/AdminFaculty"));
+const AdminAssignments = lazy(() => import("./pages/admin/AdminAssignments"));
+const AdminProfile = lazy(() => import("./pages/admin/AdminProfile"));
+
+// Faculty pages
+const FacultyDashboard = lazy(() => import("./pages/faculty/FacultyDashboard"));
+const FacultyAttendance = lazy(() => import("./pages/faculty/FacultyAttendance"));
+const FacultyMarks = lazy(() => import("./pages/faculty/FacultyMarks"));
+
+// Student pages
+const StudentDashboard = lazy(() => import("./pages/student/StudentDashboard"));
+const StudentProfile = lazy(() => import("./pages/student/StudentProfile"));
+const StudentAttendance = lazy(() => import("./pages/student/StudentAttendance"));
+const StudentMarks = lazy(() => import("./pages/student/StudentMarks"));
+const StudentTimetable = lazy(() => import("./pages/student/StudentTimetable"));
+
+// Campus Gallery pages
+const MainCampusGallery = lazy(() => import("./pages/campus/MainCampusGallery"));
+const LibraryGallery = lazy(() => import("./pages/campus/LibraryGallery"));
+const LabsGallery = lazy(() => import("./pages/campus/LabsGallery"));
+const HostelGallery = lazy(() => import("./pages/campus/HostelGallery"));
+
+// Chatbot
+const Chatbot = lazy(() => import("./components/Chatbot"));
+
+// Loading component
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+      <p className="text-muted-foreground">Loading...</p>
+    </div>
+  </div>
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -49,6 +76,7 @@ const queryClient = new QueryClient({
       retry: 1,
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000, // 5 minutes
+      gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
     },
   },
 });
@@ -134,7 +162,7 @@ function AppRoutes() {
   const showChatbot = location.pathname !== '/';
   
   return (
-    <>
+    <Suspense fallback={<PageLoader />}>
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<HomePage />} />
@@ -154,6 +182,10 @@ function AppRoutes() {
         <Route path="/placements" element={<Placements />} />
         <Route path="/committees" element={<Committees />} />
         <Route path="/community-services" element={<CommunityServices />} />
+        <Route path="/campus/main-campus" element={<MainCampusGallery />} />
+        <Route path="/campus/library" element={<LibraryGallery />} />
+        <Route path="/campus/labs" element={<LabsGallery />} />
+        <Route path="/campus/hostel" element={<HostelGallery />} />
         <Route path="/login" element={isAuthenticated ? <Navigate to={`/${user?.role}`} replace /> : <Login />} />
         
         {/* Admin Routes */}
@@ -165,6 +197,7 @@ function AppRoutes() {
           <Route path="students" element={<AdminStudents />} />
           <Route path="faculty" element={<AdminFaculty />} />
           <Route path="assignments" element={<AdminAssignments />} />
+          <Route path="profile" element={<AdminProfile />} />
           <Route path="change-password" element={<ChangePassword />} />
         </Route>
 
@@ -191,7 +224,7 @@ function AppRoutes() {
       
       {/* Global Chatbot - available on all pages except HomePage */}
       {showChatbot && <Chatbot />}
-    </>
+    </Suspense>
   );
 }
 

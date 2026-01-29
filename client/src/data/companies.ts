@@ -3,9 +3,11 @@
  * Includes placeholder logos and company information
  */
 
+import { Building2, Shield, Lock, Briefcase, GraduationCap, Cloud, Globe, Laptop, Code, Wrench, Factory, Truck, Car, Store, Database, Target, Cpu, Radio, Cog, Hammer, Tractor } from 'lucide-react';
+
 export interface CompanyPartner {
   name: string;
-  logo: string; // Using emoji/icon placeholders for now
+  logo: string | React.ReactElement; // Using emoji/icon placeholders for now
   category: 'tech' | 'consulting' | 'automotive' | 'cybersecurity' | 'cloud';
   description?: string;
 }
@@ -13,65 +15,65 @@ export interface CompanyPartner {
 export const industryPartners: CompanyPartner[] = [
   {
     name: 'Palo Alto Networks',
-    logo: '🛡️',
+    logo: 'Shield',
     category: 'cybersecurity',
     description: 'Global leader in cybersecurity solutions',
   },
   {
     name: 'EC-Council',
-    logo: '🔐',
+    logo: 'Lock',
     category: 'cybersecurity',
     description: 'Cybersecurity certification and training',
   },
   {
     name: 'EPAM Systems',
-    logo: '💼',
+    logo: 'Briefcase',
     category: 'consulting',
     description: 'Digital platform engineering services',
   },
   {
     name: 'EduSkills',
-    logo: '🎓',
+    logo: 'GraduationCap',
     category: 'tech',
     description: 'Education and skill development',
   },
   {
     name: 'Salesforce',
-    logo: '☁️',
+    logo: 'Cloud',
     category: 'cloud',
     description: 'Customer relationship management',
   },
   {
     name: 'Wipro',
-    logo: '🌐',
+    logo: 'Globe',
     category: 'tech',
     description: 'Global IT services and consulting',
   },
 ];
 
 export const topRecruiters: CompanyPartner[] = [
-  { name: 'TCS', logo: '🏢', category: 'tech' },
-  { name: 'Infosys', logo: '💻', category: 'tech' },
-  { name: 'Wipro', logo: '🌐', category: 'tech' },
-  { name: 'Cognizant', logo: '🔷', category: 'consulting' },
-  { name: 'Tech Mahindra', logo: '🔧', category: 'tech' },
-  { name: 'HCL', logo: '🏭', category: 'tech' },
-  { name: 'Capgemini', logo: '🎯', category: 'consulting' },
-  { name: 'Accenture', logo: '💎', category: 'consulting' },
-  { name: 'IBM', logo: '🔵', category: 'tech' },
-  { name: 'Amazon', logo: '📦', category: 'tech' },
-  { name: 'Microsoft', logo: '🪟', category: 'tech' },
-  { name: 'Google', logo: '🔍', category: 'tech' },
-  { name: 'Deloitte', logo: '💼', category: 'consulting' },
-  { name: 'Oracle', logo: '🔴', category: 'tech' },
-  { name: 'SAP', logo: '📊', category: 'tech' },
-  { name: 'Cisco', logo: '🌐', category: 'tech' },
-  { name: 'Intel', logo: '🔷', category: 'tech' },
-  { name: 'Qualcomm', logo: '📡', category: 'tech' },
-  { name: 'Bosch', logo: '⚙️', category: 'automotive' },
-  { name: 'L&T', logo: '🏗️', category: 'tech' },
-  { name: 'Ashok Leyland', logo: '🚛', category: 'automotive' },
-  { name: 'Mahindra', logo: '🚜', category: 'automotive' },
-  { name: 'TATA Motors', logo: '🚗', category: 'automotive' },
-  { name: 'Hyundai', logo: '🚙', category: 'automotive' },
+  { name: 'TCS', logo: 'Building2', category: 'tech' },
+  { name: 'Infosys', logo: 'Laptop', category: 'tech' },
+  { name: 'Wipro', logo: 'Globe', category: 'tech' },
+  { name: 'Cognizant', logo: 'Code', category: 'consulting' },
+  { name: 'Tech Mahindra', logo: 'Wrench', category: 'tech' },
+  { name: 'HCL', logo: 'Factory', category: 'tech' },
+  { name: 'Capgemini', logo: 'Target', category: 'consulting' },
+  { name: 'Accenture', logo: 'Briefcase', category: 'consulting' },
+  { name: 'IBM', logo: 'Database', category: 'tech' },
+  { name: 'Amazon', logo: 'Store', category: 'tech' },
+  { name: 'Microsoft', logo: 'Laptop', category: 'tech' },
+  { name: 'Google', logo: 'Globe', category: 'tech' },
+  { name: 'Deloitte', logo: 'Briefcase', category: 'consulting' },
+  { name: 'Oracle', logo: 'Database', category: 'tech' },
+  { name: 'SAP', logo: 'Code', category: 'tech' },
+  { name: 'Cisco', logo: 'Globe', category: 'tech' },
+  { name: 'Intel', logo: 'Cpu', category: 'tech' },
+  { name: 'Qualcomm', logo: 'Radio', category: 'tech' },
+  { name: 'Bosch', logo: 'Cog', category: 'automotive' },
+  { name: 'L&T', logo: 'Hammer', category: 'tech' },
+  { name: 'Ashok Leyland', logo: 'Truck', category: 'automotive' },
+  { name: 'Mahindra', logo: 'Tractor', category: 'automotive' },
+  { name: 'TATA Motors', logo: 'Car', category: 'automotive' },
+  { name: 'Hyundai', logo: 'Car', category: 'automotive' },
 ];

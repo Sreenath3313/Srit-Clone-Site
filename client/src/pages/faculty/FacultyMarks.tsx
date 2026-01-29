@@ -246,14 +246,19 @@ export default function FacultyMarks() {
       </div>
 
       {/* Filters */}
-      <div className="card-base p-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="card-base p-6 shadow-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="label-base">Class (Subject - Section)</label>
+            <label className="label-base flex items-center gap-2 mb-2">
+              <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+              Class (Subject - Section)
+            </label>
             <select
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="input-base"
+              className="input-base border-2 hover:border-orange-500 focus:border-orange-500 focus:ring-orange-500 transition-colors"
             >
               {uniqueClasses.map((cls) => (
                 <option key={cls.key} value={cls.key}>{cls.label}</option>
@@ -261,11 +266,16 @@ export default function FacultyMarks() {
             </select>
           </div>
           <div>
-            <label className="label-base">Exam Type</label>
+            <label className="label-base flex items-center gap-2 mb-2">
+              <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              Exam Type
+            </label>
             <select
               value={selectedExam}
               onChange={(e) => setSelectedExam(e.target.value)}
-              className="input-base"
+              className="input-base border-2 hover:border-orange-500 focus:border-orange-500 focus:ring-orange-500 transition-colors"
             >
               {examTypes.map((exam) => (
                 <option key={exam} value={exam}>{exam}</option>
@@ -283,20 +293,34 @@ export default function FacultyMarks() {
       ) : (
         <>
           {/* Info Banner */}
-          <div className="card-base p-4 bg-primary/5 border-primary/20">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="card-base p-6 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900 border-2 border-orange-200 dark:border-orange-800 shadow-lg">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-md">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div>
-                <p className="font-medium text-foreground">
+              <div className="flex-1">
+                <p className="font-bold text-lg text-foreground mb-1">
                   {selectedExam} - {uniqueClasses.find(c => c.key === selectedClass)?.label}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Maximum marks: {getMaxMarks()} | Enter marks for each student below
+                  Maximum marks: <span className="font-bold text-orange-600">{getMaxMarks()}</span> | Enter marks for each student below
                 </p>
+              </div>
+              <div className="flex gap-2">
+                <button className="px-4 py-2 rounded-lg border-2 border-orange-500 text-orange-600 dark:text-orange-400 font-medium hover:bg-orange-50 dark:hover:bg-orange-950 transition-all duration-300 flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                  </svg>
+                  Bulk Upload
+                </button>
+                <button className="px-4 py-2 rounded-lg bg-gradient-to-br from-green-500 to-green-600 text-white font-medium shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Export
+                </button>
               </div>
             </div>
           </div>
@@ -312,93 +336,120 @@ export default function FacultyMarks() {
               description="This section doesn't have any students yet." 
             />
           ) : (
-            <div className="card-base overflow-hidden">
-              <table className="w-full">
-                <thead>
-                  <tr className="table-header">
-                    <th className="table-cell text-left w-12">#</th>
-                    <th className="table-cell text-left">Roll No</th>
-                    <th className="table-cell text-left">Student Name</th>
-                    <th className="table-cell text-center w-32">Internal 1 (20)</th>
-                    <th className="table-cell text-center w-32">Internal 2 (20)</th>
-                    <th className="table-cell text-center w-32">External (100)</th>
-                    <th className="table-cell text-center w-24">Total</th>
-                    <th className="table-cell text-center w-20">Grade</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {students.map((student, index) => {
-                    const internal1 = student.marks?.internal1 || 0;
-                    const internal2 = student.marks?.internal2 || 0;
-                    const external = student.marks?.external || 0;
-                    const total = internal1 + internal2 + external;
-                    const { grade, color } = getGrade(total, 140);
-                    
-                    return (
-                      <tr key={student.id} className="hover:bg-muted/50 transition-colors">
-                        <td className="table-cell text-muted-foreground">{index + 1}</td>
-                        <td className="table-cell font-mono">{student.roll_no}</td>
-                        <td className="table-cell">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                              <span className="text-xs font-medium text-primary">
-                                {student.name.split(' ').map(n => n[0]).join('')}
-                              </span>
+            <div className="card-base overflow-hidden shadow-lg">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900">
+                      <th className="table-cell text-left w-12 font-bold">#</th>
+                      <th className="table-cell text-left font-bold">Roll No</th>
+                      <th className="table-cell text-left font-bold">Student Name</th>
+                      <th className="table-cell text-center w-32 font-bold">
+                        <div className="flex flex-col items-center">
+                          <span>Internal 1</span>
+                          <span className="text-xs text-muted-foreground font-normal">(20)</span>
+                        </div>
+                      </th>
+                      <th className="table-cell text-center w-32 font-bold">
+                        <div className="flex flex-col items-center">
+                          <span>Internal 2</span>
+                          <span className="text-xs text-muted-foreground font-normal">(20)</span>
+                        </div>
+                      </th>
+                      <th className="table-cell text-center w-32 font-bold">
+                        <div className="flex flex-col items-center">
+                          <span>External</span>
+                          <span className="text-xs text-muted-foreground font-normal">(100)</span>
+                        </div>
+                      </th>
+                      <th className="table-cell text-center w-24 font-bold">Total</th>
+                      <th className="table-cell text-center w-20 font-bold">Grade</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {students.map((student, index) => {
+                      const internal1 = student.marks?.internal1 || 0;
+                      const internal2 = student.marks?.internal2 || 0;
+                      const external = student.marks?.external || 0;
+                      const total = internal1 + internal2 + external;
+                      const { grade, color } = getGrade(total, 140);
+                      
+                      return (
+                        <tr key={student.id} className="hover:bg-gradient-to-br hover:from-orange-50 hover:to-orange-100 dark:hover:from-orange-950/50 dark:hover:to-orange-900/50 transition-all duration-200 border-b border-border">
+                          <td className="table-cell text-muted-foreground font-medium">{index + 1}</td>
+                          <td className="table-cell font-mono font-semibold">{student.roll_no}</td>
+                          <td className="table-cell">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-md">
+                                <span className="text-xs font-bold text-white">
+                                  {student.name.split(' ').map(n => n[0]).join('')}
+                                </span>
+                              </div>
+                              <span className="font-semibold text-foreground">{student.name}</span>
                             </div>
-                            <span className="font-medium text-foreground">{student.name}</span>
-                          </div>
-                        </td>
-                        <td className="table-cell">
-                          <input
-                            type="number"
-                            min={0}
-                            max={20}
-                            value={student.marks?.internal1 ?? ''}
-                            onChange={(e) => updateMark(student.id, e.target.value)}
-                            disabled={selectedExam !== 'Internal 1'}
-                            className={`w-full text-center input-base py-1.5 ${
-                              selectedExam !== 'Internal 1' ? 'bg-muted cursor-not-allowed' : ''
-                            }`}
-                            placeholder="-"
-                          />
-                        </td>
-                        <td className="table-cell">
-                          <input
-                            type="number"
-                            min={0}
-                            max={20}
-                            value={student.marks?.internal2 ?? ''}
-                            onChange={(e) => updateMark(student.id, e.target.value)}
-                            disabled={selectedExam !== 'Internal 2'}
-                            className={`w-full text-center input-base py-1.5 ${
-                              selectedExam !== 'Internal 2' ? 'bg-muted cursor-not-allowed' : ''
-                            }`}
-                            placeholder="-"
-                          />
-                        </td>
-                        <td className="table-cell">
-                          <input
-                            type="number"
-                            min={0}
-                            max={100}
-                            value={student.marks?.external ?? ''}
-                            onChange={(e) => updateMark(student.id, e.target.value)}
-                            disabled={selectedExam !== 'External'}
-                            className={`w-full text-center input-base py-1.5 ${
-                              selectedExam !== 'External' ? 'bg-muted cursor-not-allowed' : ''
-                            }`}
-                            placeholder="-"
-                          />
-                        </td>
-                        <td className="table-cell text-center font-bold text-foreground">{total}</td>
-                        <td className="table-cell text-center">
-                          <span className={`font-bold ${color}`}>{grade}</span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                          </td>
+                          <td className="table-cell">
+                            <input
+                              type="number"
+                              min={0}
+                              max={20}
+                              value={student.marks?.internal1 ?? ''}
+                              onChange={(e) => updateMark(student.id, e.target.value)}
+                              disabled={selectedExam !== 'Internal 1'}
+                              className={`w-full text-center input-base py-2 font-semibold border-2 transition-colors ${
+                                selectedExam === 'Internal 1' 
+                                  ? 'border-orange-500 focus:border-orange-600 focus:ring-orange-500 bg-orange-50 dark:bg-orange-950' 
+                                  : 'bg-muted cursor-not-allowed border-border'
+                              }`}
+                              placeholder="-"
+                            />
+                          </td>
+                          <td className="table-cell">
+                            <input
+                              type="number"
+                              min={0}
+                              max={20}
+                              value={student.marks?.internal2 ?? ''}
+                              onChange={(e) => updateMark(student.id, e.target.value)}
+                              disabled={selectedExam !== 'Internal 2'}
+                              className={`w-full text-center input-base py-2 font-semibold border-2 transition-colors ${
+                                selectedExam === 'Internal 2' 
+                                  ? 'border-orange-500 focus:border-orange-600 focus:ring-orange-500 bg-orange-50 dark:bg-orange-950' 
+                                  : 'bg-muted cursor-not-allowed border-border'
+                              }`}
+                              placeholder="-"
+                            />
+                          </td>
+                          <td className="table-cell">
+                            <input
+                              type="number"
+                              min={0}
+                              max={100}
+                              value={student.marks?.external ?? ''}
+                              onChange={(e) => updateMark(student.id, e.target.value)}
+                              disabled={selectedExam !== 'External'}
+                              className={`w-full text-center input-base py-2 font-semibold border-2 transition-colors ${
+                                selectedExam === 'External' 
+                                  ? 'border-orange-500 focus:border-orange-600 focus:ring-orange-500 bg-orange-50 dark:bg-orange-950' 
+                                  : 'bg-muted cursor-not-allowed border-border'
+                              }`}
+                              placeholder="-"
+                            />
+                          </td>
+                          <td className="table-cell text-center">
+                            <span className="px-3 py-1 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 text-white font-bold text-sm shadow-md">
+                              {total}
+                            </span>
+                          </td>
+                          <td className="table-cell text-center">
+                            <span className={`text-xl font-bold ${color}`}>{grade}</span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
@@ -408,7 +459,7 @@ export default function FacultyMarks() {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="btn-primary px-8 flex items-center gap-2"
+                className="px-8 py-3 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 {saving ? (
                   <>
@@ -416,7 +467,12 @@ export default function FacultyMarks() {
                     Saving...
                   </>
                 ) : (
-                  'Save Marks'
+                  <>
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                    </svg>
+                    Save Marks
+                  </>
                 )}
               </button>
             </div>

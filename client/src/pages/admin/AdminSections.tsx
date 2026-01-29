@@ -130,10 +130,10 @@ export default function AdminSections() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="page-title">Sections</h1>
+          <h1 className="page-title gradient-text">Sections</h1>
           <p className="text-muted-foreground mt-1">Manage class sections and assignments</p>
         </div>
-        <button onClick={handleAdd} className="btn-primary flex items-center gap-2">
+        <button onClick={handleAdd} className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-2.5 rounded-lg font-medium shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-2">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
@@ -155,14 +155,59 @@ export default function AdminSections() {
           }}
         />
       ) : (
-        <DataTable
-          columns={columns}
-          data={sections}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          searchable
-          searchKeys={['name']}
-        />
+        <div className="bg-white dark:bg-card rounded-xl border-2 border-orange-100 dark:border-orange-900/30 shadow-lg overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-gradient-to-r from-orange-100 to-orange-50 dark:from-orange-950/30 dark:to-orange-900/20 border-b-2 border-orange-200 dark:border-orange-900/30">
+                  <th className="px-6 py-4 text-left text-xs font-bold text-orange-900 dark:text-orange-100 uppercase tracking-wider">Section</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-orange-900 dark:text-orange-100 uppercase tracking-wider">Department</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-orange-900 dark:text-orange-100 uppercase tracking-wider">Year</th>
+                  <th className="px-6 py-4 text-right text-xs font-bold text-orange-900 dark:text-orange-100 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {sections.map((section) => (
+                  <tr key={section.id} className="hover:bg-orange-50/50 dark:hover:bg-orange-950/10 transition-colors duration-150">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="font-semibold text-foreground text-lg">{section.name}</span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-200 border border-orange-200 dark:border-orange-800">
+                        {section.departments?.code || '-'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="text-sm font-medium text-muted-foreground">Year {section.year}</span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => handleEdit(section)}
+                          className="p-2 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-md hover:scale-110 transition-all duration-200"
+                          title="Edit"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                        </button>
+                        <button
+                          onClick={() => handleDelete(section)}
+                          className="p-2 rounded-lg bg-red-500 text-white hover:bg-red-600 hover:shadow-md hover:scale-110 transition-all duration-200"
+                          title="Delete"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       )}
 
       <Modal
@@ -212,7 +257,7 @@ export default function AdminSections() {
             <button type="button" onClick={() => setIsModalOpen(false)} className="btn-ghost flex-1" disabled={submitting}>
               Cancel
             </button>
-            <button type="submit" className="btn-primary flex-1" disabled={submitting}>
+            <button type="submit" className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-2.5 rounded-lg font-medium shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 flex-1" disabled={submitting}>
               {submitting ? 'Saving...' : editingSection ? 'Update' : 'Create'} Section
             </button>
           </div>

@@ -179,45 +179,78 @@ export default function AdminAssignments() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="page-title">Class Assignment</h1>
-          <p className="text-muted-foreground mt-1">Assign faculty to subjects and create timetables</p>
+          <h1 className="page-title gradient-text">Class Assignment</h1>
+          <p className="text-muted-foreground mt-1">Assign faculty to subjects and create timetables with ease</p>
         </div>
       </div>
 
-      {/* Section Selector */}
-      <div className="card-base p-4">
-        <div className="flex flex-wrap items-center gap-4">
-          <label className="text-sm font-medium text-foreground">Select Section:</label>
-          <div className="flex flex-wrap gap-2">
-            {sections.map((section) => (
-              <button
-                key={section.id}
-                onClick={() => setSelectedSection(section.id)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  selectedSection === section.id
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                }`}
+      {/* Section Selector with Department Filter */}
+      <div className="bg-gradient-to-r from-orange-50 to-white dark:from-orange-950/10 dark:to-background rounded-xl border border-orange-200 dark:border-orange-900/30 p-6 shadow-md">
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                <svg className="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                Filter by Department
+              </label>
+              <select
+                value={sections.find(s => s.id === selectedSection)?.department_id || ''}
+                onChange={(e) => {
+                  const deptSections = sections.filter(s => s.department_id === e.target.value);
+                  if (deptSections.length > 0) setSelectedSection(deptSections[0].id);
+                }}
+                className="w-full px-4 py-2.5 bg-white dark:bg-card border-2 border-orange-200 dark:border-orange-900/30 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 hover:border-orange-300"
               >
-                {section.name}
-              </button>
-            ))}
+                {Array.from(new Set(sections.map(s => s.departments))).filter(Boolean).map((dept: any) => (
+                  <option key={dept.id} value={dept.id}>{dept.name} ({dept.code})</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                <svg className="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                Select Section
+              </label>
+              <select
+                value={selectedSection}
+                onChange={(e) => setSelectedSection(e.target.value)}
+                className="w-full px-4 py-2.5 bg-white dark:bg-card border-2 border-orange-200 dark:border-orange-900/30 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 hover:border-orange-300"
+              >
+                {sections
+                  .filter(s => !sections.find(sec => sec.id === selectedSection)?.department_id || s.department_id === sections.find(sec => sec.id === selectedSection)?.department_id)
+                  .map((section) => (
+                  <option key={section.id} value={section.id}>
+                    {section.name} - Year {section.year}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground bg-orange-100/50 dark:bg-orange-950/20 p-3 rounded-lg">
+            <svg className="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Click on any slot in the timetable to assign a faculty and subject</span>
           </div>
         </div>
       </div>
 
       {/* Timetable Grid */}
-      <div className="card-base overflow-hidden">
-        <div className="p-4 border-b border-border">
-          <h2 className="section-title">Timetable for {sections.find(s => s.id === selectedSection)?.name}</h2>
+      <div className="bg-white dark:bg-card rounded-xl border-2 border-orange-100 dark:border-orange-900/30 shadow-lg overflow-hidden">
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-4">
+          <h2 className="text-xl font-bold text-white">Timetable for {sections.find(s => s.id === selectedSection)?.name}</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="table-header">
-                <th className="table-cell text-left">Day / Period</th>
+              <tr className="bg-gradient-to-r from-orange-100 to-orange-50 dark:from-orange-950/30 dark:to-orange-900/20 border-b-2 border-orange-200 dark:border-orange-900/30">
+                <th className="px-6 py-4 text-left text-xs font-bold text-orange-900 dark:text-orange-100 uppercase tracking-wider">Day / Period</th>
                 {periods.map((period) => (
-                  <th key={period} className="table-cell text-center min-w-[120px]">
+                  <th key={period} className="px-4 py-4 text-center text-xs font-bold text-orange-900 dark:text-orange-100 uppercase tracking-wider min-w-[120px]">
                     Period {period}
                   </th>
                 ))}
@@ -225,24 +258,24 @@ export default function AdminAssignments() {
             </thead>
             <tbody>
               {days.map((day) => (
-                <tr key={day} className="hover:bg-muted/30">
-                  <td className="table-cell font-medium text-foreground">{day}</td>
+                <tr key={day} className="hover:bg-orange-50/50 dark:hover:bg-orange-950/10 transition-colors border-b border-border">
+                  <td className="px-6 py-4 font-semibold text-foreground bg-orange-50/30 dark:bg-orange-950/10">{day}</td>
                   {periods.map((period) => {
                     const timetable = getTimetable(day, period);
                     return (
-                      <td key={period} className="table-cell p-2">
+                      <td key={period} className="p-2">
                         <button
                           onClick={() => handleSlotClick(day, period)}
                           className={`w-full p-3 rounded-lg text-left transition-all duration-200 ${
                             timetable
-                              ? 'bg-primary/10 border border-primary/30 hover:border-primary'
-                              : 'bg-muted/50 border border-dashed border-border hover:border-primary/50 hover:bg-muted'
+                              ? 'bg-gradient-to-br from-orange-100 to-orange-50 dark:from-orange-950/30 dark:to-orange-900/20 border-2 border-orange-300 dark:border-orange-700 hover:shadow-lg hover:scale-105'
+                              : 'bg-gray-50 dark:bg-card border-2 border-dashed border-gray-300 dark:border-border hover:border-orange-400 hover:bg-orange-50/30 dark:hover:bg-orange-950/10 hover:scale-105'
                           }`}
                         >
                           {timetable ? (
                             <div>
-                              <p className="text-sm font-medium text-foreground truncate">{timetable.subjects?.name || '-'}</p>
-                              <p className="text-xs text-muted-foreground truncate">{timetable.faculty?.name || '-'}</p>
+                              <p className="text-sm font-semibold text-foreground truncate">{timetable.subjects?.name || '-'}</p>
+                              <p className="text-xs text-muted-foreground truncate mt-1">{timetable.faculty?.name || '-'}</p>
                             </div>
                           ) : (
                             <div className="text-center">
@@ -332,7 +365,7 @@ export default function AdminAssignments() {
             <button type="button" onClick={() => setIsModalOpen(false)} className="btn-ghost flex-1" disabled={submitting}>
               Cancel
             </button>
-            <button type="submit" className="btn-primary flex-1" disabled={submitting}>
+            <button type="submit" className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-2.5 rounded-lg font-medium shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 flex-1" disabled={submitting}>
               {submitting ? 'Saving...' : 'Assign'}
             </button>
           </div>

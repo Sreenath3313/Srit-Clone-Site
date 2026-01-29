@@ -1,33 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import ReactPlayer from 'react-player';
-import { Play, MapPin, Camera } from 'lucide-react';
+import { MapPin, Book, FlaskConical, Home, Play } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const tourSpots = [
   {
     title: 'Main Campus',
     description: 'Explore our state-of-the-art academic buildings',
     icon: <MapPin className="w-6 h-6" />,
-    color: 'from-blue-500 to-cyan-500'
+    color: 'from-blue-500 to-cyan-500',
+    link: '/campus/main-campus'
   },
   {
     title: 'Library',
     description: 'World-class learning resources',
-    icon: <Camera className="w-6 h-6" />,
-    color: 'from-purple-500 to-pink-500'
+    icon: <Book className="w-6 h-6" />,
+    color: 'from-purple-500 to-pink-500',
+    link: '/campus/library'
   },
   {
     title: 'Labs',
     description: 'Advanced research facilities',
-    icon: <Camera className="w-6 h-6" />,
-    color: 'from-orange-500 to-red-500'
+    icon: <FlaskConical className="w-6 h-6" />,
+    color: 'from-orange-500 to-red-500',
+    link: '/campus/labs'
   },
   {
-    title: 'Sports Complex',
-    description: 'Olympic-standard facilities',
-    icon: <Camera className="w-6 h-6" />,
-    color: 'from-green-500 to-emerald-500'
+    title: 'Hostel',
+    description: 'Comfortable residential facilities',
+    icon: <Home className="w-6 h-6" />,
+    color: 'from-green-500 to-emerald-500',
+    link: '/campus/hostel'
   },
 ];
 
@@ -36,6 +40,8 @@ export const VirtualTour: React.FC = () => {
     threshold: 0.1,
     triggerOnce: true,
   });
+
+  const [playVideo, setPlayVideo] = useState(false);
 
   return (
     <section className="py-20 bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/20 relative overflow-hidden">
@@ -46,6 +52,7 @@ export const VirtualTour: React.FC = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10" ref={ref}>
+        {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -61,47 +68,45 @@ export const VirtualTour: React.FC = () => {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
-          {/* Video Player */}
+          
+          {/* VIDEO CARD */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-video bg-gradient-to-br from-slate-900 to-slate-700 group">
-              {/* Placeholder for video - using fallback image */}
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-purple-500/20 flex items-center justify-center">
-                <div className="text-center text-white">
-                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 backdrop-blur-md mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <Play className="w-10 h-10" />
-                  </div>
-                  <p className="text-lg font-semibold">Click to Start Tour</p>
-                </div>
-              </div>
-              
-              {/* Actual video player (will work when video URL is available) */}
-              <div className="opacity-0 hover:opacity-100 transition-opacity duration-300">
-                <ReactPlayer
-                  url="https://www.youtube.com/watch?v=dQw4w9WgXcQ" // TODO: Replace with actual SRIT campus tour video URL
-                  width="100%"
-                  height="100%"
-                  controls
-                  light
-                  playing={false}
-                />
-              </div>
-              
-              {/* Decorative border */}
-              <div className="absolute inset-0 border-4 border-orange-500/50 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-video bg-black">
 
-            {/* Floating badge */}
-            <div className="absolute -bottom-6 -right-6 bg-gradient-to-br from-orange-500 to-purple-500 text-white px-6 py-3 rounded-xl shadow-xl transform rotate-3 hover:rotate-0 transition-transform duration-300">
-              <p className="font-bold text-lg">360° View Available</p>
+              {!playVideo && (
+                <div
+                  onClick={() => setPlayVideo(true)}
+                  className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-700 cursor-pointer group"
+                >
+                  <div className="flex flex-col items-center text-white">
+                    <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <Play className="w-10 h-10 ml-1" />
+                    </div>
+                    <p className="mt-4 text-lg font-semibold">
+                      Click to Start Tour
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {playVideo && (
+                <video
+                  src="/video.mp4"
+                  className="w-full h-full object-cover"
+                  controls
+                  autoPlay
+                />
+              )}
+
             </div>
           </motion.div>
 
-          {/* Tour Spots Grid */}
+          {/* TOUR SPOTS */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -114,34 +119,33 @@ export const VirtualTour: React.FC = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={inView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                className="group cursor-pointer"
               >
-                <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full border border-gray-100">
-                  {/* Icon */}
-                  <div className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${spot.color} text-white mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    {spot.icon}
-                  </div>
+                <Link to={spot.link} className="group cursor-pointer block">
+                  <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full border border-gray-100">
+                    
+                    <div className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${spot.color} text-white mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                      {spot.icon}
+                    </div>
 
-                  {/* Content */}
-                  <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors">
-                    {spot.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm">
-                    {spot.description}
-                  </p>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors">
+                      {spot.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm">
+                      {spot.description}
+                    </p>
 
-                  {/* Hover indicator */}
-                  <div className="mt-4 flex items-center text-orange-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span className="text-sm">Explore</span>
-                    <span className="ml-1 transform group-hover:translate-x-1 transition-transform">→</span>
+                    <div className="mt-4 flex items-center text-orange-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span className="text-sm">View Gallery</span>
+                      <span className="ml-1 transform group-hover:translate-x-1 transition-transform">→</span>
+                    </div>
                   </div>
-                </div>
+                </Link>
               </motion.div>
             ))}
           </motion.div>
         </div>
 
-        {/* Interactive Campus Map Placeholder */}
+        {/* MAP PLACEHOLDER */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -161,6 +165,7 @@ export const VirtualTour: React.FC = () => {
             </div>
           </div>
         </motion.div>
+
       </div>
     </section>
   );

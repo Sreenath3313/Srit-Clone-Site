@@ -4,6 +4,8 @@ import { Footer } from '@/components/homepage/Footer';
 import { Building2, Utensils, Dumbbell, Music, BookOpen, Home } from 'lucide-react';
 import { useScrollToHash } from '@/hooks/useScrollToHash';
 import { OrangeBorder } from '@/components/common/OrangeBorder';
+import { motion } from 'framer-motion';
+import { SlideIn, FadeIn } from '@/components/animations';
 
 const CampusLife: React.FC = () => {
   useScrollToHash();
@@ -25,12 +27,23 @@ const CampusLife: React.FC = () => {
         </section>
 
         {/* Campus Facilities Overview */}
-        <section className="py-16">
+        <section className="py-16 bg-gradient-to-br from-orange-50/50 to-purple-50/30">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">World-Class Facilities</h2>
+            <FadeIn>
+              <h2 className="text-3xl font-bold text-center mb-4">
+                <span className="bg-gradient-to-r from-orange-600 to-purple-600 bg-clip-text text-transparent">
+                  World-Class Facilities
+                </span>
+              </h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-orange-600 to-purple-600 mx-auto mb-12 rounded-full"></div>
+            </FadeIn>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* Hostel */}
-              <div className="bg-white p-6 rounded-lg shadow-lg">
+              <SlideIn direction="left" delay={0}>
+                <motion.div 
+                  className="bg-gradient-to-br from-orange-50 to-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  whileHover={{ y: -10, scale: 1.02 }}
+                >
                 <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
                   <Home className="h-8 w-8 text-orange-600" />
                 </div>
@@ -45,10 +58,15 @@ const CampusLife: React.FC = () => {
                   <li>• Laundry facilities</li>
                   <li>• Medical care</li>
                 </ul>
-              </div>
+              </motion.div>
+              </SlideIn>
 
               {/* Library */}
-              <div className="bg-white p-6 rounded-lg shadow-lg">
+              <SlideIn direction="up" delay={0.1}>
+                <motion.div 
+                  className="bg-gradient-to-br from-blue-50 to-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  whileHover={{ y: -10, scale: 1.02 }}
+                >
                 <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
                   <BookOpen className="h-8 w-8 text-orange-600" />
                 </div>
@@ -63,10 +81,15 @@ const CampusLife: React.FC = () => {
                   <li>• Research journals</li>
                   <li>• E-learning resources</li>
                 </ul>
-              </div>
+              </motion.div>
+              </SlideIn>
 
               {/* Sports */}
-              <div className="bg-white p-6 rounded-lg shadow-lg">
+              <SlideIn direction="right" delay={0.2}>
+                <motion.div 
+                  className="bg-gradient-to-br from-green-50 to-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  whileHover={{ y: -10, scale: 1.02 }}
+                >
                 <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
                   <Dumbbell className="h-8 w-8 text-orange-600" />
                 </div>
@@ -81,10 +104,15 @@ const CampusLife: React.FC = () => {
                   <li>• Volleyball courts</li>
                   <li>• Gymnasium</li>
                 </ul>
-              </div>
+              </motion.div>
+              </SlideIn>
 
               {/* Canteen */}
-              <div className="bg-white p-6 rounded-lg shadow-lg">
+              <SlideIn direction="left" delay={0.3}>
+                <motion.div 
+                  className="bg-gradient-to-br from-yellow-50 to-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  whileHover={{ y: -10, scale: 1.02 }}
+                >
                 <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
                   <Utensils className="h-8 w-8 text-orange-600" />
                 </div>
@@ -99,10 +127,15 @@ const CampusLife: React.FC = () => {
                   <li>• Spacious seating</li>
                   <li>• Varied menu</li>
                 </ul>
-              </div>
+              </motion.div>
+              </SlideIn>
 
               {/* Auditorium */}
-              <div className="bg-white p-6 rounded-lg shadow-lg">
+              <SlideIn direction="up" delay={0.4}>
+                <motion.div 
+                  className="bg-gradient-to-br from-purple-50 to-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  whileHover={{ y: -10, scale: 1.02 }}
+                >
                 <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
                   <Music className="h-8 w-8 text-orange-600" />
                 </div>
@@ -117,10 +150,15 @@ const CampusLife: React.FC = () => {
                   <li>• Stage lighting</li>
                   <li>• Sound system</li>
                 </ul>
-              </div>
+              </motion.div>
+              </SlideIn>
 
               {/* Infrastructure */}
-              <div className="bg-white p-6 rounded-lg shadow-lg">
+              <SlideIn direction="right" delay={0.5}>
+                <motion.div 
+                  className="bg-gradient-to-br from-indigo-50 to-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  whileHover={{ y: -10, scale: 1.02 }}
+                >
                 <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
                   <Building2 className="h-8 w-8 text-orange-600" />
                 </div>
@@ -135,74 +173,111 @@ const CampusLife: React.FC = () => {
                   <li>• Wi-Fi campus</li>
                   <li>• Green campus</li>
                 </ul>
-              </div>
+              </motion.div>
+              </SlideIn>
             </div>
           </div>
         </section>
 
         {/* Cultural Activities */}
-        <section className="py-16 bg-white">
+        <section className="py-16 bg-gradient-to-br from-white to-blue-50/30">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Cultural Activities</h2>
+            <FadeIn>
+              <h2 className="text-3xl font-bold text-center mb-4">
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Cultural Activities
+                </span>
+              </h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-12 rounded-full"></div>
+            </FadeIn>
             <div className="max-w-4xl mx-auto">
-              <p className="text-gray-700 mb-8 text-center">
-                SRIT hosts numerous cultural events throughout the year, providing students with platforms to showcase their talents.
-              </p>
+              <FadeIn delay={0.2}>
+                <p className="text-gray-700 mb-8 text-center">
+                  SRIT hosts numerous cultural events throughout the year, providing students with platforms to showcase their talents.
+                </p>
+              </FadeIn>
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-orange-50 p-6 rounded-lg">
+                <SlideIn direction="left">
+                  <motion.div 
+                    className="bg-gradient-to-br from-orange-50 to-orange-100/50 p-6 rounded-lg shadow-lg"
+                    whileHover={{ scale: 1.05 }}
+                  >
                   <h3 className="text-xl font-bold text-gray-900 mb-3">Annual Fest - TECHNOVISION</h3>
                   <p className="text-gray-700">
                     Our flagship technical and cultural festival featuring competitions, workshops, exhibitions, 
                     guest lectures, and entertainment events spanning multiple days.
                   </p>
-                </div>
-                <div className="bg-orange-50 p-6 rounded-lg">
+                </motion.div>
+                </SlideIn>
+                <SlideIn direction="right">
+                  <motion.div 
+                    className="bg-gradient-to-br from-pink-50 to-pink-100/50 p-6 rounded-lg shadow-lg"
+                    whileHover={{ scale: 1.05 }}
+                  >
                   <h3 className="text-xl font-bold text-gray-900 mb-3">Cultural Programs</h3>
                   <p className="text-gray-700">
                     Regular cultural activities including dance, music, drama, and art competitions. 
                     Students participate in inter-college competitions and win accolades.
                   </p>
-                </div>
-                <div className="bg-orange-50 p-6 rounded-lg">
+                </motion.div>
+                </SlideIn>
+                <SlideIn direction="left" delay={0.2}>
+                  <motion.div 
+                    className="bg-gradient-to-br from-blue-50 to-blue-100/50 p-6 rounded-lg shadow-lg"
+                    whileHover={{ scale: 1.05 }}
+                  >
                   <h3 className="text-xl font-bold text-gray-900 mb-3">Technical Events</h3>
                   <p className="text-gray-700">
                     Hackathons, coding competitions, project exhibitions, paper presentations, 
                     and guest lectures by industry experts.
                   </p>
-                </div>
-                <div className="bg-orange-50 p-6 rounded-lg">
+                </motion.div>
+                </SlideIn>
+                <SlideIn direction="right" delay={0.2}>
+                  <motion.div 
+                    className="bg-gradient-to-br from-green-50 to-green-100/50 p-6 rounded-lg shadow-lg"
+                    whileHover={{ scale: 1.05 }}
+                  >
                   <h3 className="text-xl font-bold text-gray-900 mb-3">Sports Events</h3>
                   <p className="text-gray-700">
                     Annual sports meet, inter-department tournaments, and participation in 
                     university-level competitions in various sports.
                   </p>
-                </div>
+                </motion.div>
+                </SlideIn>
               </div>
             </div>
           </div>
         </section>
 
         {/* Student Life Stats */}
-        <section className="py-16 bg-gray-100">
+        <section className="py-16 bg-gradient-to-br from-purple-50/30 to-orange-50/30">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Campus by Numbers</h2>
+            <FadeIn>
+              <h2 className="text-3xl font-bold text-center mb-4">
+                <span className="bg-gradient-to-r from-purple-600 to-orange-600 bg-clip-text text-transparent">
+                  Campus by Numbers
+                </span>
+              </h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-purple-600 to-orange-600 mx-auto mb-12 rounded-full"></div>
+            </FadeIn>
             <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-              <div className="bg-white p-6 rounded-lg shadow text-center">
-                <p className="text-4xl font-bold text-orange-600 mb-2">30+</p>
-                <p className="text-gray-700">Acres Campus</p>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow text-center">
-                <p className="text-4xl font-bold text-orange-600 mb-2">2000+</p>
-                <p className="text-gray-700">Students</p>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow text-center">
-                <p className="text-4xl font-bold text-orange-600 mb-2">20+</p>
-                <p className="text-gray-700">Student Clubs</p>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow text-center">
-                <p className="text-4xl font-bold text-orange-600 mb-2">50+</p>
-                <p className="text-gray-700">Events Annually</p>
-              </div>
+              {[
+                { value: '30+', label: 'Acres Campus', colorClass: 'text-orange-600', delay: 0 },
+                { value: '2000+', label: 'Students', colorClass: 'text-blue-600', delay: 0.1 },
+                { value: '20+', label: 'Student Clubs', colorClass: 'text-purple-600', delay: 0.2 },
+                { value: '50+', label: 'Events Annually', colorClass: 'text-green-600', delay: 0.3 }
+              ].map((stat, index) => (
+                <SlideIn key={index} direction="up" delay={stat.delay}>
+                  <motion.div 
+                    className="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition-all"
+                    whileHover={{ y: -10, scale: 1.05 }}
+                  >
+                    <p className={`text-4xl font-bold ${stat.colorClass} mb-2`}>{stat.value}</p>
+                    <p className="text-gray-700">{stat.label}</p>
+                  </motion.div>
+                </SlideIn>
+              ))}
             </div>
           </div>
         </section>

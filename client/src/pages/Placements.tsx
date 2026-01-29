@@ -1,12 +1,24 @@
 import React from 'react';
 import { Header } from '@/components/homepage/Header';
 import { Footer } from '@/components/homepage/Footer';
-import { Briefcase, TrendingUp, Users, Award, Building } from 'lucide-react';
+import { Briefcase, TrendingUp, Users, Award, Building, Shield, Lock, GraduationCap, Cloud, Globe, Laptop, Code, Wrench, Factory, Truck, Car, Store, Database, Target, Cpu, Radio, Cog, Hammer, Tractor } from 'lucide-react';
 import { useScrollToHash } from '@/hooks/useScrollToHash';
 import { OrangeBorder } from '@/components/common/OrangeBorder';
 import { ModernCard, ModernCardBody } from '@/components/common/ModernCard';
 import { industryPartners, topRecruiters } from '@/data/companies';
 import { motion } from 'framer-motion';
+
+// Helper function to get icon component - memoized outside component
+const iconMap: { [key: string]: React.ComponentType<{ className?: string }> } = {
+  Shield, Lock, Briefcase, GraduationCap, Cloud, Globe, Laptop, Code, 
+  Wrench, Factory, Truck, Car, Store, Database, Target, Cpu, Radio, 
+  Cog, Hammer, Tractor, Building2: Building
+};
+
+const getIconComponent = (iconName: string) => {
+  const IconComponent = iconMap[iconName] || Building;
+  return <IconComponent className="h-10 w-10" />;
+};
 
 const Placements: React.FC = () => {
   useScrollToHash();
@@ -117,7 +129,7 @@ const Placements: React.FC = () => {
                       className="h-full"
                     >
                       <ModernCardBody className="flex flex-col items-center justify-center text-center h-32">
-                        <div className="text-4xl mb-2">{partner.logo}</div>
+                        <div className="text-orange-600 mb-2">{getIconComponent(partner.logo as string)}</div>
                         <h3 className="font-bold text-gray-900 text-sm">{partner.name}</h3>
                       </ModernCardBody>
                     </ModernCard>
@@ -156,7 +168,7 @@ const Placements: React.FC = () => {
                       className="h-full"
                     >
                       <ModernCardBody className="flex flex-col items-center justify-center text-center p-4">
-                        <div className="text-3xl mb-2">{company.logo}</div>
+                        <div className="text-blue-600 mb-2">{getIconComponent(company.logo as string)}</div>
                         <p className="text-sm font-semibold text-gray-700">{company.name}</p>
                       </ModernCardBody>
                     </ModernCard>
@@ -240,60 +252,174 @@ const Placements: React.FC = () => {
           </div>
         </section>
 
-        {/* Placement Process */}
+        {/* Placement Process - Hierarchical Tree Structure */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Placement Process</h2>
             
-            <div className="max-w-4xl mx-auto">
-              <div className="space-y-6">
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-6 flex-shrink-0">1</div>
-                  <div className="bg-gray-50 p-6 rounded-lg flex-grow">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Pre-Placement Talk (PPT)</h3>
-                    <p className="text-gray-700">Company representatives present their organization, job roles, and selection criteria to students.</p>
+            <div className="max-w-5xl mx-auto">
+              {/* Tree Structure */}
+              <div className="relative">
+                {/* Start Node */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  className="flex justify-center mb-8"
+                >
+                  <div className="bg-gradient-to-br from-orange-600 to-orange-500 text-white px-8 py-4 rounded-lg shadow-lg font-bold text-lg">
+                    Placement Drive Begins
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-6 flex-shrink-0">2</div>
-                  <div className="bg-gray-50 p-6 rounded-lg flex-grow">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Online Assessment</h3>
-                    <p className="text-gray-700">Aptitude test, technical test, and coding assessment conducted online on campus.</p>
-                  </div>
-                </div>
+                {/* Vertical Line */}
+                <div className="w-1 h-12 bg-orange-300 mx-auto mb-6"></div>
 
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-6 flex-shrink-0">3</div>
-                  <div className="bg-gray-50 p-6 rounded-lg flex-grow">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Group Discussion</h3>
-                    <p className="text-gray-700">Assessment of communication skills, leadership, and teamwork abilities (if applicable).</p>
+                {/* Level 1: Pre-Placement Talk */}
+                <motion.div
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                  className="flex justify-center mb-6"
+                >
+                  <div className="bg-blue-50 border-2 border-blue-300 px-6 py-4 rounded-lg shadow-md max-w-md">
+                    <h3 className="font-bold text-blue-900 text-lg mb-2">Step 1: Pre-Placement Talk (PPT)</h3>
+                    <p className="text-sm text-gray-700">Company presents organization, roles, and selection criteria</p>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-6 flex-shrink-0">4</div>
-                  <div className="bg-gray-50 p-6 rounded-lg flex-grow">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Technical Interview</h3>
-                    <p className="text-gray-700">In-depth evaluation of technical knowledge, problem-solving skills, and project work.</p>
-                  </div>
-                </div>
+                {/* Vertical Line */}
+                <div className="w-1 h-12 bg-orange-300 mx-auto mb-6"></div>
 
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-6 flex-shrink-0">5</div>
-                  <div className="bg-gray-50 p-6 rounded-lg flex-grow">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">HR Interview</h3>
-                    <p className="text-gray-700">Final round focusing on personality, attitude, cultural fit, and salary negotiation.</p>
+                {/* Level 2: Online Assessment - Branches */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 }}
+                  className="mb-6"
+                >
+                  <div className="bg-purple-50 border-2 border-purple-300 px-6 py-4 rounded-lg shadow-md max-w-md mx-auto mb-4">
+                    <h3 className="font-bold text-purple-900 text-lg mb-2">Step 2: Online Assessment</h3>
+                    <p className="text-sm text-gray-700">Screening round for eligible candidates</p>
                   </div>
-                </div>
+                  
+                  {/* Three branches */}
+                  <div className="flex justify-center items-start gap-8 mt-8">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.5 }}
+                      className="relative flex-1 max-w-xs"
+                    >
+                      <div className="absolute -top-8 left-1/2 w-1 h-8 bg-purple-300"></div>
+                      <div className="bg-green-50 border-2 border-green-300 px-4 py-3 rounded-lg shadow text-center">
+                        <p className="font-semibold text-green-900 text-sm">Aptitude Test</p>
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.6 }}
+                      className="relative flex-1 max-w-xs"
+                    >
+                      <div className="absolute -top-8 left-1/2 w-1 h-8 bg-purple-300"></div>
+                      <div className="bg-green-50 border-2 border-green-300 px-4 py-3 rounded-lg shadow text-center">
+                        <p className="font-semibold text-green-900 text-sm">Technical Test</p>
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.7 }}
+                      className="relative flex-1 max-w-xs"
+                    >
+                      <div className="absolute -top-8 left-1/2 w-1 h-8 bg-purple-300"></div>
+                      <div className="bg-green-50 border-2 border-green-300 px-4 py-3 rounded-lg shadow text-center">
+                        <p className="font-semibold text-green-900 text-sm">Coding Round</p>
+                      </div>
+                    </motion.div>
+                  </div>
+                </motion.div>
 
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-6 flex-shrink-0">6</div>
-                  <div className="bg-gray-50 p-6 rounded-lg flex-grow">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Offer Letter</h3>
-                    <p className="text-gray-700">Selected candidates receive offer letters with joining details and package information.</p>
+                {/* Vertical Line */}
+                <div className="w-1 h-12 bg-orange-300 mx-auto mb-6"></div>
+
+                {/* Level 3: Group Discussion (Optional) */}
+                <motion.div
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.8 }}
+                  className="flex justify-center mb-6"
+                >
+                  <div className="bg-yellow-50 border-2 border-yellow-300 px-6 py-4 rounded-lg shadow-md max-w-md">
+                    <h3 className="font-bold text-yellow-900 text-lg mb-2">Step 3: Group Discussion</h3>
+                    <p className="text-sm text-gray-700">Communication, leadership & teamwork assessment (if applicable)</p>
                   </div>
-                </div>
+                </motion.div>
+
+                {/* Vertical Line */}
+                <div className="w-1 h-12 bg-orange-300 mx-auto mb-6"></div>
+
+                {/* Level 4: Interviews - Dual Branch */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 1.0 }}
+                  className="mb-6"
+                >
+                  <div className="flex justify-center items-start gap-12">
+                    <motion.div
+                      initial={{ opacity: 0, x: -30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 1.1 }}
+                      className="relative flex-1 max-w-sm"
+                    >
+                      <div className="absolute -top-8 left-1/2 w-1 h-8 bg-orange-300"></div>
+                      <div className="bg-indigo-50 border-2 border-indigo-300 px-6 py-4 rounded-lg shadow-md">
+                        <h3 className="font-bold text-indigo-900 text-lg mb-2">Step 4: Technical Interview</h3>
+                        <p className="text-sm text-gray-700">In-depth technical knowledge & problem-solving evaluation</p>
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, x: 30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 1.2 }}
+                      className="relative flex-1 max-w-sm"
+                    >
+                      <div className="absolute -top-8 left-1/2 w-1 h-8 bg-orange-300"></div>
+                      <div className="bg-pink-50 border-2 border-pink-300 px-6 py-4 rounded-lg shadow-md">
+                        <h3 className="font-bold text-pink-900 text-lg mb-2">Step 5: HR Interview</h3>
+                        <p className="text-sm text-gray-700">Personality, cultural fit & salary negotiation</p>
+                      </div>
+                    </motion.div>
+                  </div>
+                </motion.div>
+
+                {/* Vertical Line */}
+                <div className="w-1 h-12 bg-orange-300 mx-auto mb-6"></div>
+
+                {/* Final Node: Offer Letter */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 1.4 }}
+                  className="flex justify-center"
+                >
+                  <div className="bg-gradient-to-br from-green-600 to-green-500 text-white px-8 py-4 rounded-lg shadow-lg font-bold text-lg flex items-center gap-3">
+                    <Award className="h-6 w-6" />
+                    Step 6: Offer Letter & Joining
+                  </div>
+                </motion.div>
               </div>
             </div>
           </div>

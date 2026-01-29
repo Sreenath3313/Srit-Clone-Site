@@ -61,6 +61,7 @@ const PartnerLogo: React.FC<{ img: string; alt: string }> = ({ img, alt }) => (
     <img
       src={img}
       alt={alt}
+      loading="lazy"
       className="max-h-16 max-w-[160px] object-contain"
     />
   </motion.div>

@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useState, useEffect } from 'react';
+import React, { useRef, useMemo, useState, useEffect, memo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Canvas3DErrorBoundary } from './Canvas3DErrorBoundary';
@@ -9,7 +9,7 @@ interface HexGridProps {
   isMobile?: boolean;
 }
 
-function HexGrid({ count = 50, isMobile = false }: HexGridProps) {
+const HexGrid = memo(function HexGrid({ count = 50, isMobile = false }: HexGridProps) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
 
   const hexagons = useMemo(() => {
@@ -88,7 +88,7 @@ function HexGrid({ count = 50, isMobile = false }: HexGridProps) {
       />
     </instancedMesh>
   );
-}
+});
 
 interface HexagonalGridProps {
   className?: string;
@@ -96,11 +96,11 @@ interface HexagonalGridProps {
   isMobile?: boolean;
 }
 
-export const HexagonalGrid: React.FC<HexagonalGridProps> = ({ 
+export const HexagonalGrid: React.FC<HexagonalGridProps> = memo(function HexagonalGrid({ 
   className = '', 
   gridCount = 50,
   isMobile = false
-}) => {
+}) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasTimedOut, setHasTimedOut] = useState(false);
 
@@ -143,10 +143,11 @@ export const HexagonalGrid: React.FC<HexagonalGridProps> = ({
             powerPreference: "high-performance"
           }}
           onCreated={() => setIsLoaded(true)}
+          frameloop="demand"
         >
           <HexGrid count={gridCount} isMobile={isMobile} />
         </Canvas>
       </Canvas3DErrorBoundary>
     </div>
   );
-};
+});

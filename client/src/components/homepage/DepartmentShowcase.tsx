@@ -99,6 +99,7 @@ export const DepartmentShowcase: React.FC = () => {
                     <img 
                       src={dept.image} 
                       alt={dept.name}
+                      loading="lazy"
                       className="w-full h-full object-cover mix-blend-overlay opacity-40"
                     />
                     

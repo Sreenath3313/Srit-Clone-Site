@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, memo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Sphere, MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
@@ -10,7 +10,7 @@ interface AnimatedLogoProps {
   isMobile?: boolean;
 }
 
-function AnimatedLogo({ rotation = 0, isMobile = false }: AnimatedLogoProps) {
+const AnimatedLogo = memo(function AnimatedLogo({ rotation = 0, isMobile = false }: AnimatedLogoProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
 
@@ -70,7 +70,7 @@ function AnimatedLogo({ rotation = 0, isMobile = false }: AnimatedLogoProps) {
       )}
     </group>
   );
-}
+});
 
 interface Logo3DProps {
   className?: string;
@@ -78,11 +78,11 @@ interface Logo3DProps {
   isMobile?: boolean;
 }
 
-export const Logo3D: React.FC<Logo3DProps> = ({ 
+export const Logo3D: React.FC<Logo3DProps> = memo(function Logo3D({ 
   className = '', 
   height = '400px',
   isMobile = false
-}) => {
+}) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasTimedOut, setHasTimedOut] = useState(false);
 
@@ -120,6 +120,7 @@ export const Logo3D: React.FC<Logo3DProps> = ({
             powerPreference: "high-performance"
           }}
           onCreated={() => setIsLoaded(true)}
+          frameloop="demand"
         >
           <ambientLight intensity={0.3} />
           <AnimatedLogo isMobile={isMobile} />
@@ -127,4 +128,4 @@ export const Logo3D: React.FC<Logo3DProps> = ({
       </Canvas3DErrorBoundary>
     </div>
   );
-};
+});

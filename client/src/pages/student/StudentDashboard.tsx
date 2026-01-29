@@ -1,12 +1,12 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import StatCard from '../../components/common/StatCard';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import ErrorMessage from '../../components/common/ErrorMessage';
-import EmptyState from '../../components/common/EmptyState';
 import { useAuth } from '@/contexts/AuthContext';
 import { attendanceApi, timetableApi, marksApi } from '@/services/api';
 import type { Attendance, Timetable, Marks } from '@/services/api';
 import { toast } from 'sonner';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 
 const PERIOD_TIMES: Record<number, string> = {
   1: '9:00 - 9:50',
@@ -18,6 +18,42 @@ const PERIOD_TIMES: Record<number, string> = {
 };
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const COLORS = ['#22c55e', '#ef4444'];
+
+function CircularProgress({ percentage }: { percentage: number }) {
+  const radius = 90;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (percentage / 100) * circumference;
+
+  const getColor = () => {
+    if (percentage >= 85) return '#22c55e';
+    if (percentage >= 75) return '#f97316';
+    return '#ef4444';
+  };
+
+  return (
+    <div className="relative inline-flex items-center justify-center">
+      <svg width={200} height={200} className="-rotate-90">
+        <circle cx="100" cy="100" r={radius} stroke="#e5e7eb" strokeWidth="16" fill="none" />
+        <circle
+          cx="100"
+          cy="100"
+          r={radius}
+          stroke={getColor()}
+          strokeWidth="16"
+          fill="none"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+        />
+      </svg>
+      <div className="absolute text-center">
+        <p className="text-4xl font-bold">{percentage}%</p>
+        <p className="text-sm text-muted-foreground">Attendance</p>
+      </div>
+    </div>
+  );
+}
 
 export default function StudentDashboard() {
   const { user } = useAuth();
@@ -28,214 +64,125 @@ export default function StudentDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
 
-  // Fixed: Only depend on stable user IDs to prevent infinite loop
-  useEffect(() => {
-    if (user?.profile?.id && user?.profile?.section_id) {
-      fetchData();
-    }
-  }, [user?.profile?.id, user?.profile?.section_id]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     if (!user?.profile?.id || !user?.profile?.section_id) return;
-
     try {
       setLoading(true);
-      setError(null);
-      const [attendanceData, timetableData, marksData] = await Promise.all([
+      const [a, t, m] = await Promise.all([
         attendanceApi.getByStudent(user.profile.id),
         timetableApi.getBySection(user.profile.section_id),
         marksApi.getByStudent(user.profile.id),
       ]);
-      setAttendance(attendanceData);
-      setTimetable(timetableData);
-      setMarks(marksData);
+      setAttendance(a);
+      setTimetable(t);
+      setMarks(m);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load dashboard data');
+      setError('Failed to load dashboard data');
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.profile?.id, user?.profile?.section_id]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
     await fetchData();
     setRefreshing(false);
-    toast.success('Data refreshed!');
+    toast.success('Data refreshed');
   };
 
-  const stats = useMemo(() => {
-    // Calculate attendance percentage
-    const totalClasses = attendance.length;
-    const presentClasses = attendance.filter(a => a.present).length;
-    const attendancePercent = totalClasses > 0 ? ((presentClasses / totalClasses) * 100).toFixed(0) : '0';
-
-    // Calculate CGPA from marks
-    let totalMarks = 0;
-    let totalMaxMarks = 0;
-    marks.forEach(m => {
-      const studentTotal = (m.internal1 || 0) + (m.internal2 || 0) + (m.external || 0);
-      totalMarks += studentTotal;
-      totalMaxMarks += 140;
-    });
-    const percentage = totalMaxMarks > 0 ? (totalMarks / totalMaxMarks) * 100 : 0;
-    const cgpa = (percentage / 10).toFixed(1);
-
-    // Count unique subjects
-    const uniqueSubjects = new Set(attendance.map(a => a.subject_id));
-    const subjectsCount = uniqueSubjects.size;
-
-    // Get today's classes
-    const today = DAYS[new Date().getDay()];
-    const todayClasses = timetable.filter(t => t.day === today);
-
-    return [
-      { title: 'Attendance', value: `${attendancePercent}%`, icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>, color: 'success' as const },
-      { title: 'CGPA', value: cgpa, icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>, color: 'primary' as const },
-      { title: 'Subjects', value: String(subjectsCount), icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>, color: 'warning' as const },
-      { title: 'Classes Today', value: String(todayClasses.length), icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>, color: 'secondary' as const },
-    ];
-  }, [attendance, marks, timetable]);
+  const attendancePercent = useMemo(() => {
+    if (!attendance.length) return 0;
+    const present = attendance.filter(a => a.present).length;
+    return Math.round((present / attendance.length) * 100);
+  }, [attendance]);
 
   const todaySchedule = useMemo(() => {
     const today = DAYS[new Date().getDay()];
     return timetable
       .filter(t => t.day === today)
-      .sort((a, b) => a.period - b.period)
-      .map(t => ({
-        period: t.period,
-        time: PERIOD_TIMES[t.period] || 'TBA',
-        subject: t.subjects?.name || 'Unknown',
-        faculty: t.faculty?.name || 'TBA',
-      }));
+      .sort((a, b) => a.period - b.period);
   }, [timetable]);
 
-  const subjectAttendance = useMemo(() => {
-    const subjectMap = new Map<string, { subject: string; present: number; total: number }>();
-    
-    attendance.forEach(a => {
-      const subjectName = a.subjects?.name || 'Unknown Subject';
-      if (!subjectMap.has(a.subject_id)) {
-        subjectMap.set(a.subject_id, { subject: subjectName, present: 0, total: 0 });
-      }
-      const data = subjectMap.get(a.subject_id)!;
-      data.total++;
-      if (a.present) data.present++;
-    });
+  const recentMarks = useMemo(() => marks.slice(0, 5), [marks]);
 
-    return Array.from(subjectMap.values()).slice(0, 4);
-  }, [attendance]);
-
-  if (loading) {
-    return <LoadingSpinner className="min-h-[400px]" />;
-  }
-
-  if (error) {
-    return <ErrorMessage message={error} />;
-  }
-
-  if (!user?.profile) {
-    return <ErrorMessage message="Unable to load profile. Please try logging in again." />;
-  }
+  if (loading) return <LoadingSpinner className="min-h-[400px]" />;
+  if (error) return <ErrorMessage message={error} />;
+  if (!user?.profile) return <ErrorMessage message="Profile not found" />;
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6">
+
+      {/* Header */}
+      <div className="rounded-xl bg-orange-500 p-6 text-white flex justify-between items-center">
         <div>
-          <h1 className="page-title">Dashboard</h1>
-          <p className="text-muted-foreground mt-1">Welcome back, {user.name}! Here's your academic overview.</p>
+          <h1 className="text-2xl font-bold">Welcome, {user.name}</h1>
+          <p>Student Dashboard</p>
         </div>
-        <button 
-          onClick={handleRefresh} 
-          disabled={refreshing} 
-          className="btn-outline flex items-center gap-2"
+        <button
+          onClick={handleRefresh}
+          disabled={refreshing}
+          className="bg-white text-orange-600 px-4 py-2 rounded-lg"
         >
-          <svg 
-            className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-          >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth={2} 
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" 
-            />
-          </svg>
           {refreshing ? 'Refreshing...' : 'Refresh'}
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat) => <StatCard key={stat.title} {...stat} />)}
-      </div>
-
+      {/* Attendance */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="card-base p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="section-title">Today's Schedule</h2>
-            <span className="badge-primary">{DAYS[new Date().getDay()]}</span>
-          </div>
-          {todaySchedule.length === 0 ? (
-            <div className="text-center py-8">
-              <svg className="w-16 h-16 mx-auto mb-4 text-muted-foreground/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <p className="text-lg font-medium text-foreground mb-1">No classes today</p>
-              <p className="text-sm text-muted-foreground mb-4">Enjoy your day off!</p>
-              <p className="text-xs text-muted-foreground">
-                💡 Tip: Check your timetable to see your weekly schedule
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {todaySchedule.map((item, i) => (
-                <div key={i} className="flex items-center gap-4 p-4 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
-                  <div className="w-12 h-12 rounded-lg gradient-primary flex items-center justify-center text-white font-bold">P{item.period}</div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-foreground">{item.subject}</p>
-                    <p className="text-sm text-muted-foreground">{item.faculty}</p>
-                  </div>
-                  <p className="text-sm font-medium text-foreground">{item.time}</p>
-                </div>
-              ))}
-            </div>
-          )}
+        <div className="card-hover p-6 flex justify-center">
+          <CircularProgress percentage={attendancePercent} />
         </div>
 
-        <div className="card-base p-6">
-          <h2 className="section-title mb-4">Subject-wise Attendance</h2>
-          {subjectAttendance.length === 0 ? (
-            <div className="text-center py-8">
-              <svg className="w-16 h-16 mx-auto mb-4 text-muted-foreground/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-              </svg>
-              <p className="text-lg font-medium text-foreground mb-1">No attendance data</p>
-              <p className="text-sm text-muted-foreground mb-4">Attendance will appear once recorded by your faculty</p>
-              <p className="text-xs text-muted-foreground">
-                💡 Tip: Make sure your faculty has assigned classes and marked attendance
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {subjectAttendance.map((item) => {
-                const percent = ((item.present / item.total) * 100).toFixed(0);
-                return (
-                  <div key={item.subject}>
-                    <div className="flex justify-between mb-1">
-                      <span className="text-sm font-medium text-foreground">{item.subject}</span>
-                      <span className="text-sm text-muted-foreground">{percent}%</span>
-                    </div>
-                    <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                      <div className={`h-full rounded-full transition-all ${Number(percent) >= 75 ? 'bg-success' : 'bg-destructive'}`} style={{ width: `${percent}%` }} />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+        <div className="card-hover p-6">
+          <ResponsiveContainer width="100%" height={250}>
+            <PieChart>
+              <Pie data={[
+                { name: 'Present', value: attendance.filter(a => a.present).length },
+                { name: 'Absent', value: attendance.filter(a => !a.present).length },
+              ]} dataKey="value" innerRadius={60} outerRadius={90}>
+                {COLORS.map((c, i) => <Cell key={i} fill={c} />)}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
         </div>
       </div>
+
+      {/* Today's Schedule */}
+      <div className="card-hover p-6">
+        <h2 className="section-title mb-4">Today's Schedule</h2>
+        {todaySchedule.length === 0 ? (
+          <p>No classes today</p>
+        ) : (
+          todaySchedule.map((t, i) => (
+            <div key={i} className="flex justify-between p-3 border rounded-lg mb-2">
+              <span>{t.subjects?.name}</span>
+              <span>{PERIOD_TIMES[t.period]}</span>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Recent Marks */}
+      <div className="card-hover p-6">
+        <h2 className="section-title mb-4">Recent Marks</h2>
+        {recentMarks.length === 0 ? (
+          <p>No marks available</p>
+        ) : (
+          recentMarks.map((m, i) => (
+            <div key={i} className="flex justify-between p-3 border rounded-lg mb-2">
+              <span>{m.subjects?.name}</span>
+              <span>{(m.internal1 || 0) + (m.internal2 || 0) + (m.external || 0)}/140</span>
+            </div>
+          ))
+        )}
+      </div>
+
     </div>
   );
 }

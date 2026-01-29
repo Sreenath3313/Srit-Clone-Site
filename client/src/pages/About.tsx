@@ -111,7 +111,7 @@ const About: React.FC = () => {
                   </h2>
                 </motion.div>
                 
-                <div className="space-y-6 text-gray-700 leading-relaxed">
+                <div className="bg-gradient-to-br from-orange-50/80 to-white p-8 rounded-2xl shadow-sm space-y-6 text-gray-700 leading-relaxed">
                   <motion.p
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -360,30 +360,60 @@ const About: React.FC = () => {
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Leadership Team</h2>
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              <div className="text-center">
-                <div className="w-32 h-32 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <Users className="h-16 w-16 text-white" />
+              <motion.div 
+                className="text-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="relative w-48 h-48 mx-auto mb-4 overflow-hidden rounded-lg shadow-lg">
+                  <img 
+                    src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop" 
+                    alt="Dr. Rajesh Kumar"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Dr. Rajesh Kumar</h3>
                 <p className="text-orange-600 font-medium mb-2">Principal</p>
                 <p className="text-gray-600 text-sm">Ph.D. in Computer Science, 25+ years of experience in academia</p>
-              </div>
-              <div className="text-center">
-                <div className="w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <Users className="h-16 w-16 text-white" />
+              </motion.div>
+              <motion.div 
+                className="text-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                <div className="relative w-48 h-48 mx-auto mb-4 overflow-hidden rounded-lg shadow-lg">
+                  <img 
+                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop" 
+                    alt="Prof. Lakshmi Devi"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Prof. Lakshmi Devi</h3>
                 <p className="text-blue-600 font-medium mb-2">Vice Principal (Academics)</p>
                 <p className="text-gray-600 text-sm">M.Tech, 20+ years of teaching experience</p>
-              </div>
-              <div className="text-center">
-                <div className="w-32 h-32 bg-gradient-to-br from-green-500 to-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <Users className="h-16 w-16 text-white" />
+              </motion.div>
+              <motion.div 
+                className="text-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <div className="relative w-48 h-48 mx-auto mb-4 overflow-hidden rounded-lg shadow-lg">
+                  <img 
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop" 
+                    alt="Dr. Arun Sharma"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Dr. Arun Sharma</h3>
                 <p className="text-green-600 font-medium mb-2">Dean (Research & Development)</p>
                 <p className="text-gray-600 text-sm">Ph.D., 15+ research publications</p>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>

@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useState, useEffect } from 'react';
+import React, { useRef, useMemo, useState, useEffect, memo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Torus, Sphere, Octahedron } from '@react-three/drei';
 import * as THREE from 'three';
@@ -13,7 +13,7 @@ interface FloatingShape3DProps {
   isMobile?: boolean;
 }
 
-function FloatingShape3D({ position, rotation = 0, type, isMobile = false }: FloatingShape3DProps) {
+const FloatingShape3D = memo(function FloatingShape3D({ position, rotation = 0, type, isMobile = false }: FloatingShape3DProps) {
   const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
@@ -87,13 +87,13 @@ function FloatingShape3D({ position, rotation = 0, type, isMobile = false }: Flo
       )}
     </group>
   );
-}
+});
 
 interface SceneProps {
   isMobile?: boolean;
 }
 
-function Scene({ isMobile = false }: SceneProps) {
+const Scene = memo(function Scene({ isMobile = false }: SceneProps) {
   const shapes = useMemo(() => {
     // Reduce shapes on mobile (3 vs 6)
     if (isMobile) {
@@ -131,17 +131,17 @@ function Scene({ isMobile = false }: SceneProps) {
       ))}
     </>
   );
-}
+});
 
 interface GeometricShapes3DProps {
   className?: string;
   isMobile?: boolean;
 }
 
-export const GeometricShapes3D: React.FC<GeometricShapes3DProps> = ({ 
+export const GeometricShapes3D: React.FC<GeometricShapes3DProps> = memo(function GeometricShapes3D({ 
   className = '',
   isMobile = false
-}) => {
+}) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasTimedOut, setHasTimedOut] = useState(false);
 
@@ -177,10 +177,11 @@ export const GeometricShapes3D: React.FC<GeometricShapes3DProps> = ({
             powerPreference: "high-performance"
           }}
           onCreated={() => setIsLoaded(true)}
+          frameloop="demand"
         >
           <Scene isMobile={isMobile} />
         </Canvas>
       </Canvas3DErrorBoundary>
     </div>
   );
-};
+});

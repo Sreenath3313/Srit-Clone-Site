@@ -1,16 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import StatCard from '../../components/common/StatCard';
-import { statsApi, AdminStats, DepartmentStats } from '@/services/api';
+import { statsApi, AdminStats, DepartmentStats, departmentsApi, Department } from '@/services/api';
 import { toast } from 'sonner';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
-
-const quickActions = [
-  { title: 'Add Student', icon: '👤', path: '/admin/students', color: 'bg-blue-500' },
-  { title: 'Add Faculty', icon: '👨‍🏫', path: '/admin/faculty', color: 'bg-green-500' },
-  { title: 'Create Section', icon: '📚', path: '/admin/sections', color: 'bg-purple-500' },
-  { title: 'Assign Classes', icon: '📅', path: '/admin/assignments', color: 'bg-orange-500' },
-];
 
 const recentActivities = [
   { id: 1, action: 'New student enrolled', name: 'Rahul Sharma', department: 'Computer Science', time: '2 minutes ago' },
@@ -20,12 +12,16 @@ const recentActivities = [
   { id: 5, action: 'Timetable updated', name: 'ECE 2nd Year', department: 'Electronics', time: '3 hours ago' },
 ];
 
+const YEARS = ['All Years', '1st Year', '2nd Year', '3rd Year', '4th Year'];
+
 export default function AdminDashboard() {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [adminStats, setAdminStats] = useState<AdminStats | null>(null);
   const [departmentStats, setDepartmentStats] = useState<DepartmentStats[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
+  const [selectedDepartment, setSelectedDepartment] = useState<string>('all');
+  const [selectedYear, setSelectedYear] = useState<string>('All Years');
 
   useEffect(() => {
     fetchStats();
@@ -35,12 +31,14 @@ export default function AdminDashboard() {
     try {
       setLoading(true);
       setError(null);
-      const [stats, deptStats] = await Promise.all([
+      const [stats, deptStats, depts] = await Promise.all([
         statsApi.getAdminStats(),
         statsApi.getDepartmentStats(),
+        departmentsApi.getAll(),
       ]);
       setAdminStats(stats);
       setDepartmentStats(deptStats);
+      setDepartments(depts);
     } catch (err) {
       console.error('Error fetching stats:', err);
       const errorMessage = err instanceof Error ? err.message : 'Failed to load statistics';
@@ -61,6 +59,7 @@ export default function AdminDashboard() {
         </svg>
       ),
       color: 'primary' as const,
+      gradient: true,
     },
     {
       title: 'Total Faculty',
@@ -71,6 +70,7 @@ export default function AdminDashboard() {
         </svg>
       ),
       color: 'success' as const,
+      gradient: true,
     },
     {
       title: 'Departments',
@@ -81,6 +81,7 @@ export default function AdminDashboard() {
         </svg>
       ),
       color: 'warning' as const,
+      gradient: true,
     },
     {
       title: 'Active Subjects',
@@ -91,10 +92,16 @@ export default function AdminDashboard() {
         </svg>
       ),
       color: 'secondary' as const,
+      gradient: true,
     },
   ] : [];
 
   const departmentColors = ['bg-blue-500', 'bg-green-500', 'bg-orange-500', 'bg-purple-500', 'bg-pink-500'];
+
+  // Filter department stats based on selection
+  const filteredDepartmentStats = selectedDepartment === 'all'
+    ? departmentStats
+    : departmentStats.filter(dept => dept.id === selectedDepartment);
 
   if (loading) {
     return (
@@ -106,9 +113,49 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div>
-        <h1 className="page-title">Dashboard</h1>
-        <p className="text-muted-foreground mt-1">Welcome back! Here's what's happening in your institution.</p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="page-title">Dashboard</h1>
+          <p className="text-muted-foreground mt-1">Welcome back! Here's what's happening in your institution.</p>
+        </div>
+
+        {/* Filters */}
+        <div className="flex flex-wrap gap-3">
+          <div className="relative">
+            <select
+              value={selectedDepartment}
+              onChange={(e) => setSelectedDepartment(e.target.value)}
+              className="input-base pr-10 appearance-none cursor-pointer min-w-[180px]"
+            >
+              <option value="all">All Departments</option>
+              {departments.map((dept) => (
+                <option key={dept.id} value={dept.id}>
+                  {dept.name}
+                </option>
+              ))}
+            </select>
+            <svg className="w-5 h-5 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+
+          <div className="relative">
+            <select
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value)}
+              className="input-base pr-10 appearance-none cursor-pointer min-w-[150px]"
+            >
+              {YEARS.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+            <svg className="w-5 h-5 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
       </div>
 
       {error && (
@@ -122,23 +169,6 @@ export default function AdminDashboard() {
         {stats.map((stat) => (
           <StatCard key={stat.title} {...stat} />
         ))}
-      </div>
-
-      {/* Quick Actions */}
-      <div className="card-base p-6">
-        <h2 className="section-title mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {quickActions.map((action) => (
-            <button
-              key={action.title}
-              onClick={() => navigate(action.path)}
-              className="flex flex-col items-center gap-3 p-4 rounded-xl border border-border hover:border-primary/50 hover:bg-muted/50 transition-all duration-200 group"
-            >
-              <span className="text-3xl group-hover:scale-110 transition-transform">{action.icon}</span>
-              <span className="text-sm font-medium text-foreground">{action.title}</span>
-            </button>
-          ))}
-        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -174,12 +204,12 @@ export default function AdminDashboard() {
             <button className="text-sm text-primary hover:underline">Manage</button>
           </div>
           <div className="space-y-4">
-            {departmentStats.length === 0 ? (
+            {filteredDepartmentStats.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-4">No departments found</p>
             ) : (
-              departmentStats.map((dept, index) => {
+              filteredDepartmentStats.map((dept, index) => {
                 const color = departmentColors[index % departmentColors.length];
-                const maxStudents = Math.max(...departmentStats.map(d => d.studentsCount), 1);
+                const maxStudents = Math.max(...filteredDepartmentStats.map(d => d.studentsCount), 1);
                 return (
                   <div key={dept.id} className="flex items-center gap-4">
                     <div className={`w-3 h-3 rounded-full ${color}`} />
