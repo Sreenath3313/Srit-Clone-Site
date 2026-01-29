@@ -9,7 +9,6 @@ import { AdmissionTracker } from '@/components/homepage/AdmissionTracker';
 import { DepartmentComparison } from '@/components/homepage/DepartmentComparison';
 import { CampusMap } from '@/components/homepage/CampusMap';
 import { VirtualCounselor } from '@/components/homepage/VirtualCounselor';
-import { AccessibilityToolbar } from '@/components/common/AccessibilityToolbar';
 import { OrangeBorder } from '@/components/common/OrangeBorder';
 import { MouseFollowEffect } from '@/components/animations';
 import { useIsMobile } from '@/hooks/useIsMobile';
@@ -98,8 +97,7 @@ const HomePage: React.FC = () => {
         <Chatbot />
       </Suspense>
 
-      {/* Accessibility Toolbar */}
-      <AccessibilityToolbar />
+      
     </div>
   );
 };
